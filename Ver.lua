@@ -37,3 +37,11 @@ function VerCheckMachineP()
   end
 -- End Machine Manager Version Checker
 
+-- Fluid Manager Version Checker
+function VerCheckFluidD()
+  return 100
+  end
+function VerCheckFluidP()
+  return "1.0.0"
+  end
+-- End Fluid Manager Version Checker
