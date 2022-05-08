@@ -15,9 +15,9 @@ function VerCheckBattP()
 -- End Of Battery Manager Version Checker
 
 -- Drone Manager Version Checker
-function VerCheckBattD()
+function VerCheckDroneD()
   return 001
   end
-function VerCheckBattP()
+function VerCheckDroneP()
   return "0.0.1"
   end
