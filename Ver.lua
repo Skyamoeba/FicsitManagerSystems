@@ -5,11 +5,6 @@ function MODVerP()
   return "0.3.7"
   end
 
--- Test Area Version Checker
-function VersionCheckBatt()
-  return 101
-  end
-
 -- Battery Manager Version Checker
 function VerCheckBattD()
   return 100
