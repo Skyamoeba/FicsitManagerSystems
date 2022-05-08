@@ -2,12 +2,12 @@ Build = "0001-0201FIC-1025    "
 
 
 -- Status Light #############################
-PAN = {"BatteryManager",0,0,1,0,40,0,1}
+PAN = {"DroneManager",0,0,1,0,40,0,1}
 ConPan = 0
 -- ##########################################
 
 
-SiteName = "Battery Storage 1"
+SiteName = "Drone Manager 1"
 Refresh_Rate = 1
 --FicsItNetworksVer= "0.2.1"
 CBeep            = false
