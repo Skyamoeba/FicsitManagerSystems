@@ -7,26 +7,29 @@ ConPan = 0
 -- ##########################################
 
 
-SiteName = "Drone Manager 1"
+SiteName = "Drone Port 1"
 Refresh_Rate = 1
---FicsItNetworksVer= "0.2.1"
 CBeep            = false
 EnableStausLight = true
 AlertForAnyPWR   = true -- if this is true then any pwr issues will need change the status light, false it will not trigger onlyin the display you will see issues
 EnableScreen     = true
 
--- Local Network Settings
+--###### SERVER LOGGER #########
 ServerLogger     = false
 ServerAddress    = "DC73C2544A7BF761FB9BED8C695A5678" -- Work in progress
 NetworkCard      = "989413BC4CB77125E97DC5B94290D58B" -- Work in progress
 DataPort         = 3
---###### End Of LNS ######
-
-Power_Monitor = "PWRIncoming" --State the network connection for the incoming power
-
-Batterys_Bank = {"StoreBank1","","","","","","","","","","","","","","","","","","",""}
+--######################################################################################################
 
 
+DronePort1  = {100 ,"Drone Port 1 " ,0,0,0,0,"DronePort1"}
+DronePort2  = {6 ,"Drone Port 2 " ,0,0,0,0,"DronePort2"}
+
+
+function DronePorts()
+DroneStatus(0,8,DronePort1)
+--DroneStatus(0,9,DronePort2)
+end
 --############################################################################
 -- Anything after this point you should not have to change.
 -- The program will let you know if anything will need updating above.
@@ -62,16 +65,16 @@ FLAG = 0
 TEST = 0
 IND = 0
 ChkDis = false
-if EnableStausLight == true then
+if EnableStausLight == true then 
 StatusPanel = component.proxy(component.findComponent(PAN[1])[1]) 
 ProgramStat = StatusPanel:getModule(PAN[2],PAN[3])
 UpdateStat = StatusPanel:getModule(PAN[7],PAN[8])
 text = StatusPanel:getModule(PAN[4],PAN[5])
 text.size = PAN[6]
-text.text = "Battery Manager"
-end
+text.text = "Drone Manager" 
+end 
 dev = 0
-local ProgName = ("Ficsit Battery Manager 3030   ")
+local ProgName = ("Ficsit Drone Manager 3030   ")
 local By = ("Skyamoeba")
 local Ver = ("1.0.0")
 local currentver    = 100
@@ -89,29 +92,9 @@ Sec = 0
 Cat = 0
 
 --Error Handler for the batterys
-Battery1  = {1 ,Batterys_Bank[1] ,0,0,0,0,Batterys_Bank[1] }
-Battery2  = {1 ,Batterys_Bank[2] ,0,0,0,0,Batterys_Bank[2] }
-Battery3  = {1 ,Batterys_Bank[3] ,0,0,0,0,Batterys_Bank[3] }
-Battery4  = {1 ,Batterys_Bank[4] ,0,0,0,0,Batterys_Bank[4] }
-Battery5  = {1 ,Batterys_Bank[5] ,0,0,0,0,Batterys_Bank[5] }
-Battery6  = {1 ,Batterys_Bank[6] ,0,0,0,0,Batterys_Bank[6] }
-Battery7  = {1 ,Batterys_Bank[7] ,0,0,0,0,Batterys_Bank[7] }
-Battery8  = {1 ,Batterys_Bank[8] ,0,0,0,0,Batterys_Bank[8] }
-Battery9  = {1 ,Batterys_Bank[9] ,0,0,0,0,Batterys_Bank[9] }
-Battery10 = {1 ,Batterys_Bank[10],0,0,0,0,Batterys_Bank[10]}
-Battery11 = {1 ,Batterys_Bank[11],0,0,0,0,Batterys_Bank[11]}
-Battery12 = {1 ,Batterys_Bank[12],0,0,0,0,Batterys_Bank[12]}
-Battery13 = {1 ,Batterys_Bank[13],0,0,0,0,Batterys_Bank[13]}
-Battery14 = {1 ,Batterys_Bank[14],0,0,0,0,Batterys_Bank[14]}
-Battery15 = {1 ,Batterys_Bank[15],0,0,0,0,Batterys_Bank[15]}
-Battery16 = {1 ,Batterys_Bank[16],0,0,0,0,Batterys_Bank[16]}
-Battery17 = {1 ,Batterys_Bank[17],0,0,0,0,Batterys_Bank[17]}
-Battery18 = {1 ,Batterys_Bank[18],0,0,0,0,Batterys_Bank[18]}
-Battery19 = {1 ,Batterys_Bank[19],0,0,0,0,Batterys_Bank[19]}
-Battery20 = {1 ,Batterys_Bank[20],0,0,0,0,Batterys_Bank[20]}
+--Battery1  = {1 ,Battery_DisplayName[1] ,0,0,0,0,Batterys_Bank[1] }
 
---Error handler for the power monitor
-PWRIncoming  = {1 ,"",0,0,0,0,Power_Monitor}
+
 
 -- Screen System Main P2/3 ############################################################################-- 
 --print(SystemScreenSys[1]..SystemScreenSys[2])
@@ -148,15 +131,12 @@ end
 
 -- Screen System Main  P2/3 End --
 
-
---local Network 
 function SYS_SendStatus(receiver, port, data)
 netcard = component.proxy(NetworkCard)
 netcard:open(port)
 netcard:send(receiver, port, data)
 if Admin == true then print("Data Sent: "..receiver.." / "..port) end
 end
--- end Local Network
 
 -- Update Checker (part of boot up)
 function UpdateChecker()
@@ -180,8 +160,8 @@ filesystem.doFile("Ver.lua")
 
 ModVersion = MODVerD()
 ModVerPrint= MODVerP()
-VersionBatt= VerCheckBattD()
-VerPrint = VerCheckBattP()
+VersionDrone= VerCheckDroneD()
+VerPrint = VerCheckDroneP()
 
 if currentModVer < ModVersion then
 print("[FINSYS] : Update Avliable for Ficsit Networks")
@@ -227,7 +207,7 @@ end
 
 function Blink(r,g,b)
 if IND == 1 then 
-  ProgramStat:setcolor(1,0,0,10.0)
+  ProgramStat:setcolor(1,0,0,5)
   if CBeep == true then computer.beep() end
   IND = 0
   computer.millis(1000)
@@ -247,7 +227,7 @@ if IND == 1 then
   IND = 0
   computer.millis(1000)
 else
-  text.text = "Battery Manager"
+  text.text = "Drone Manager"
   UpdateStat:setcolor(1,1,1,0)
   IND = 1
   computer.millis(1000)
@@ -255,96 +235,51 @@ end
 --event.pull(1)
 end
 
+-- Main Program Functions Go Here:
 
-
---- Power Conections / Monitoring ---
-PowerSys = {"Power System Ver : ","4.0.2"}
-function Connection(x,y,Contents)
-if FLAG == 0 then
- if TEST == 1 then
-  Contents[5] = 0
-  end
-end
-
-function GPwrSwitch()
-Comp = component.proxy(component.findComponent(x)[1])
-print(Comp)
-end
-
-
-if Contents[5] == 1 then else
-if pcall (GPwrSwitch) then
-
-GPwrSwitch()
-
-Comp.isSwitchOn = y
-
-else 
- FLAG = 1 print(ERR[5]..Contents[7]) Contents[5] = 1 
-end
-end
-
-end --Function Connection End
-
-function CheckConnected(x,y)
-Comp = component.proxy(PWR[x])
-ChkDis = Comp:isConnected()
-end
-
-function GetPowerData(Connection)
-powermonpole = component.proxy(component.findComponent(Connection)[1]) -- Name your power poll
-connector = powermonpole:getPowerConnectors()[1]
-circuit = connector:getCircuit()
-end
-
-function RoundDP(num, dp)
-    local mult = 10^(dp or 0)
-    num = num * 100
-    return math.floor(num * mult + 0.5)/mult
-end
-
-
-function PWRStatus(Contents) --########################################################################################
+function DroneStatus(DisX,DisY,Contents) --#######################################################################################
 if FLAG == 0 then
  if TEST == 1 then
   Contents[3] = 0
  end
 end
 
-function PWRData()
-prefix = {"MON","LIG","SWT"}
-local setupcon = {prefixcon= prefix[1], condata=Contents[7]}
+function DROData()
+
+prefix = {"DRO","LIG","SWT"}
+local setupdro = {prefixcon= prefix[1], drodata=Contents[7]}
 local setuppwr = {prefixpwr= prefix[3], pwrdata=Contents[7]}
 local setuplig = {prefixlig= prefix[2], ligdata=Contents[7]}
 
-PWRMon = string.gsub("$prefixcon $condata", "%$(%w+)", setupcon)
+DROMon = string.gsub("$prefixcon $drodata", "%$(%w+)", setupdro)
 Light = string.gsub("$prefixlig $ligdata", "%$(%w+)", setuplig)
 Switch = string.gsub("$prefixpwr $pwrdata", "%$(%w+)", setuppwr)
 
-powermonpole = component.proxy(component.findComponent(PWRMon)[1])
-connector = powermonpole:getPowerConnectors()[1]
-Circuit = connector:getCircuit()
-
-Production = Circuit.production 
-Capacity   = Circuit.capacity
-Consumption= Circuit.consumption
-Fused      = Circuit.isFuesed
---battery stats on pwr network
-TotalPwr   = Circuit.batteryStorePercent
-BatInput   = Circuit.batteryIn
-BatOutput  = Circuit.batteryOut
-
+Drone = component.proxy(component.findComponent(DROMon)[1])
 end
 
+if Contents[3] == 1 then
+--Sys_BatDis(DisX,DisY,Contents)
+x = DisX
+y = DisY
+
+y=y+1
+gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1)
+write(2,y,Contents[2])
+gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1)
+write(77,y," Error   ")
+gpu:setForeground(1,1,1,1) gpu:setBackground(0,0,0,0)
+write(90,y,"Connection ")
+end
 
 if Contents[3] == 1 then else
-if pcall (PWRData) then
+if pcall (DROData) then
 
-PWRData()
+DROData()
 
-write(37,1,"Battery Site Name : "..SiteName)
+write(37,1,"Drone Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
-if currentver < VersionBatt then 
+if currentver < VersionDrone then 
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,1,0,1)
 write(57,2,""..VerPrint.." Update Aviliable")
@@ -376,185 +311,17 @@ gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
 
-write(37,4,"Production   : "..round(Production))
-write(37,5,"Consumption  : "..round(Consumption))
-
-write(87,1,"Total Stored : [        ]")
-
-
-if RoundDP(TotalPwr,0) == 0         then write(103,1,"        ") end
-if RoundDP(TotalPwr,0) == 100.0 then gpu:setForeground(0,1,0,1) write(110,1,"=")end
-if RoundDP(TotalPwr,0) > 87.5  then gpu:setForeground(0,1,0,1) write(109,1,"=")end
-if RoundDP(TotalPwr,0) > 75.0  then gpu:setForeground(0,1,0,1) write(108,1,"=")end
-if RoundDP(TotalPwr,0) > 62.5  then gpu:setForeground(1,1,0,1) write(107,1,"=")end
-if RoundDP(TotalPwr,0) > 50.0  then gpu:setForeground(1,1,0,1) write(106,1,"=")end
-if RoundDP(TotalPwr,0) > 37.5  then gpu:setForeground(1,1,0,1) write(105,1,"=")end
-if RoundDP(TotalPwr,0) > 25.0  then gpu:setForeground(1,0,0,1) write(104,1,"=")end
-if RoundDP(TotalPwr,0) > 12.5  then gpu:setForeground(1,0,0,1) write(103,1,"=") end
-gpu:setForeground(1,1,1,1)
-gpu:setBackground(0,0,0,0)
-
-
-write(87,2,"% Stored     : "..RoundDP(TotalPwr,0).."%")
-write(87,3,"Battery In   : "..round(BatInput))
-write(87,4,"Battery Out  : "..round(BatOutput))
-write(87,5,"Fuse Status  : [        ]")
-
-if Fused == true then 
-gpu:setForeground(1,0,0,1)
-write(103,5,"===//===")
-FLAG = 1
-else 
-gpu:setForeground(0,1,0,1)
-write(103,5,"========")
-if AlertForAnyPWR == false then FLAG = 0 end
-ProgramStat:setColor(0.0, 10.0, 0.0,10.0)
-end
-  else FLAG = 1 print(ERR[6]..Contents[7]) Contents[3] = 1
- end
-end
-gpu:setForeground(1,1,1,1)
-gpu:setBackground(0,0,0,0)
-end
-
-
-
-
-function PWRBackUp(DisX,DisY,Contents)
-if FLAG == 0 then
- if TEST == 1 then
-  Contents[3] = 0
- end
-end
-
-function PWRData()
-prefix = {"BCK","LIG","SWT"}
-local setupcon = {prefixcon= prefix[1], condata=Contents[7]}
-local setuppwr = {prefixpwr= prefix[3], pwrdata=Contents[7]}
-local setuplig = {prefixlig= prefix[2], ligdata=Contents[7]}
-
-PWRMon = string.gsub("$prefixcon $condata", "%$(%w+)", setupcon)
-Light = string.gsub("$prefixlig $ligdata", "%$(%w+)", setuplig)
-Switch = string.gsub("$prefixpwr $pwrdata", "%$(%w+)", setuppwr)
-
-powermonpole = component.proxy(component.findComponent(PWRMon)[1])
-connector = powermonpole:getPowerConnectors()[1]
-Circuit = connector:getCircuit()
-
-Production = Circuit.production 
-Capacity   = Circuit.capacity
-Consumption= Circuit.consumption
-Fused      = Circuit.isFuesed
-
-end
-if Contents[3] == 1 then else
-if pcall (PWRData) then
-
-PWRData()
-
-x = DisX
-y = DisY
-
-if EnableScreen == true then 
-write(x,y, "O-------------------------------O")
-y = y + 1
-write(x,y,"|                                |")
-y = y + 1
-write(x,y,"|                                |")
-y = y + 1
-write(x,y,"|                                |")
-y = y + 1
-write(x,y,"|                                |")
-y = y + 1
-write(x,y,"O--------------------------------O")
-
-x = DisX
-y = DisY
-x = x + 2
-y = y + 1
-
-write(x,y,Contents[2])
-y = y + 1
-write(x,y,"Consuption : "..round(Consumption))
-y = y + 1
-write(x,y,"Threshold  : "..Contents[1])
-y = y + 1
-write(x,y,"Active     : ")
-
- if Consumption > Contents[1] then
-  Connection(Switch,true, Contents)
-  gpu:setForeground(0,1,0,1)
-  gpu:setBackground(0,1,0,1)
-  x = x + 13
-  write(x,y,"###")
- else
-  Connection(Switch,false, Contents)
-  gpu:setForeground(1,0,0,1)
-  gpu:setBackground(1,0,0,1)
-  x = x + 13
-  write(x,y,"###") end
-
-    
-  end
-else FLAG = 1 print(ERR[6]..Contents[7]) Contents[3] = 1
- end
-end
-
-gpu:setForeground(1,1,1,1)
-gpu:setBackground(0,0,0,0)
-end -- PWRData()
-
-
-function BatStatus(DisX,DisY,Contents) --#######################################################################################
-if FLAG == 0 then
- if TEST == 1 then
-  Contents[3] = 0
- end
-end
-
-function BATData()
-
-prefix = {"BAT","LIG","SWT"}
-local setupbat = {prefixcon= prefix[1], batdata=Contents[7]}
-local setuppwr = {prefixpwr= prefix[3], pwrdata=Contents[7]}
-local setuplig = {prefixlig= prefix[2], ligdata=Contents[7]}
-
-BATMon = string.gsub("$prefixcon $batdata", "%$(%w+)", setupbat)
-Light = string.gsub("$prefixlig $ligdata", "%$(%w+)", setuplig)
-Switch = string.gsub("$prefixpwr $pwrdata", "%$(%w+)", setuppwr)
-
-battery = component.proxy(component.findComponent(BATMon)[1])
-end
-
-if Contents[3] == 1 then
---Sys_BatDis(DisX,DisY,Contents)
-x = DisX
-y = DisY
-
-y=y+1
-gpu:setBackground(1,0,0,1)
-write(2,y,Contents[2])
-gpu:setForeground(1,1,1,1) gpu:setBackground(1,0,0,1)
-write(84,y," Error       ")
-gpu:setForeground(1,1,1,1) gpu:setBackground(0,0,0,0)
-write(100,y,"Connection ")
-end
-
-if Contents[3] == 1 then else
-if pcall (BATData) then
-
-BATData()
 x = DisX
 y = DisY
 -- Battery Functions
-Stored     = battery.powerStore -- Shows Stored Percentage
---StoredPer  = battery.powerStorePercent -- shows something else dont know what
-TimeFull   = battery.timeUntilFull -- Time till full in Secs
-TimeEmpty  = battery.timeUntilEmpty -- Time till Empty In Secs
-Incoming   = battery.powerIn -- Shows the power coming in for charging
-Outgoing   = battery.powerOut -- Shows the power going out
-Capacity   = battery.powerCapacity -- Shows Battery Capacity
-Status     = battery.batteryStatus -- Shows the state the battery is in values 0 - 4 (see below for what the output number means)
+DroneInvOut  = Drone:getInventories()[1]
+DroneInvIn   = Drone:getInventories()[2]
+DroneInvBatt = Drone:getInventories()[3]
+DroneStore   = Drone:getInventories()[4]
+InvSumOut    = DroneInvOut.itemCount
+InvSumIn     = DroneInvIn.itemCount
+InvSumBatt   = DroneInvBatt.itemCount
+Standby      = Drone.standby
 
 if EnableScreen == true then
 x = DisX
@@ -563,24 +330,31 @@ x = x + 2
 y = y + 1
 
 write(x,y,Contents[2])
-x=x + 41
-write(x,y,round(Stored).."%")
-x = x + 13
-if Status == 3 then write(x,y,round(TimeFull))
-elseif Status == 4 then write(x,y,round(TimeEmpty))
-else write(x,y,"N/A") end
-x = x + 16
-write(x,y,round(Incoming))
+x=x + 34
 
-if Status == 0 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,0.5) write(x,y," Idle        ") end
-if Status == 1 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,0.5) write(x,y," Idle Empty  ") end
-if Status == 2 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(x,y," Idle Full   ") end
-if Status == 3 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,1,0.5) write(x,y," Charging    ") end
-if Status == 4 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,0.5) write(x,y," In Use      ") end
+BattLowFlag = 0
+
+if InvSumBatt < Contents[1] then 
+ BattLowFlag = 1 gpu:setBackground(1,0,0,1) write(x,y,InvSumBatt) gpu:setForeground(1,1,1,1) gpu:setBackground(0,0,0,0)
+ write(90,y,"Batt Low ")
+else
+ write(x,y,InvSumBatt)
+end
+x = x + 11
+if InvSumOut == 0 then write(x,y,"Empty") else write(x,y,InvSumOut)end
+x = x + 15
+if InvSumIn == 0 then write(x,y,"Empty") else write(x,y,InvSumIn)end
+
+if BattLowFlag == 1 then else
+ 
+  if Standby == false then x = x + 15 gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,1) write(x,y," Running  ") end
+end
+  if BattLowFlag == 1 then x = x + 15 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(x,y," Attention") BattLowFlag = 0 end
+
 
 end -- EnableScreen
 
---BATExample()
+
  else 
   FLAG = 1 print(ERR[7]..Contents[7]) Contents[3] = 1
    if ServerLogger == true then SYS_SendStatus(ServerAddress, DataPort, ERR[7]..Contents[7]) end
@@ -590,11 +364,12 @@ if EnableScreen == true then
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
-end --BatStatus() ####################################################################################################################
-
---- Power Connections End ---
+end --####################################################################################################################
 
 
+
+
+-- Main Program END
 
 function SystemInfo(DisX,DisY) --83 0
 textCol(1,1,1,1)
@@ -615,7 +390,6 @@ write(DisX,y,"| Run Time: "..Days.." | "..Hrs.." : "..Mins.." : "..Sec)
 y = y +1
 write(DisX,y,"O================================O")
 
-
 x = x + 33
 y = DisY + 1
 write(x,y,"|")
@@ -631,7 +405,7 @@ textCol(1,1,1,1)
 end
 
 function Sys_OverView(x,y)
-write(x,y,"O-[ Power / Batt Overview ] ----------------------------------------------------O")
+write(x,y,"O-[ ##################### ] ----------------------------------------------------O")
 y = y + 1
 write(x,y,"|                                                                               |")
 y = y + 1
@@ -646,57 +420,61 @@ y = y + 1
 write(x,y,"O-------------------------------------------------------------------------------O")
 end
 
+function LineBreak(x,y)
+write(x,y,"|                                 |          |              |              |            |            |            |")
+end
+
 function Sys_BatDis(x,y,Contents)
-write(x,y,"O=[ Battery Name ] ==================O=[ Stored ]=O=[ Time E/F ]=O=[ Consuption ]=O=[ Status ]====O=[ Errors ]====O")
+write(x,y,"O=[ Drone Port Name / Location ] =O=[ Batt ]=O=[ OutGoing ]=O=[ InComing ]=O=[ Status ]=O=[ Errors ]=O============O")
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |            |              |                |               |               |")
+LineBreak(x,y)
 y = y + 1
-write(x,y,"O====================================O============O==============O================O===============O===============O")
+write(x,y,"O=================================O==========O==============O==============O============O============O============O")
 --gpu:flush()
 end
 
 function Sys_GridOverview(x,y)
-write(x,y,"O-[ Power Grid Overview ] ----------------------------------------------------------------------------------------O")
+write(x,y,"O-[ ################### ] ----------------------------------------------------------------------------------------O")
 y = y + 1
 write(x,y,"|                                                                                                                 |")
 y = y + 1
@@ -720,15 +498,17 @@ end
 
 -- Boot Loop -- Add anything thats needs to be loaded before the main loop here
 function Boot()
+
+
 if BFlag == 0 then
 clearScreen()
-write(0,0,"Ficsit Battery Manager 3030   ")
+write(0,0,ProgName)
 write(0,1,"Prg Ver : "..Ver)
 write(0,2,"Mod Ver : "..MVer)
 write(0,3,"Build   : "..Build)
 gpu:flush()
 print("O--------------------------------O")
-print("|",ProgName,"|")
+print("|",ProgName,"  |")
 print("| By : "..By,"                |")
 print("| Prg Ver : "..Ver,"               |")
 print("| Mod Ver : "..MVer,"               |")
@@ -764,37 +544,13 @@ local f = math.floor(x)
 end
 
 function sleep(x)
- --event.pull(x)
- x = x * 1000
-local millis = computer.millis()
-    while computer.millis() - millis < x do
-        computer.skip()
-    end
+ event.pull(x)
 end
 
 function ITEMLIST()
-if PWRIncoming == "" then print("[System] : Power Probe Not Setup") else PWRStatus(PWRIncoming) end
--- Bank 1
-if Batterys_Bank[1] == "" then else BatStatus(0,8,Battery1) end
-if Batterys_Bank[2] == "" then else BatStatus(0,9,Battery2) end
-if Batterys_Bank[3] == "" then else BatStatus(0,10,Battery3) end
-if Batterys_Bank[4] == "" then else BatStatus(0,11,Battery4) end
-if Batterys_Bank[5] == "" then else BatStatus(0,12,Battery5) end
-if Batterys_Bank[6] == "" then else BatStatus(0,13,Battery6) end
-if Batterys_Bank[7] == "" then else BatStatus(0,14,Battery7) end
-if Batterys_Bank[8] == "" then else BatStatus(0,15,Battery8) end
-if Batterys_Bank[9] == "" then else BatStatus(0,16,Battery9) end
-if Batterys_Bank[10] == "" then else BatStatus(0,17,Battery10) end
-if Batterys_Bank[11] == "" then else BatStatus(0,18,Battery11) end
-if Batterys_Bank[12] == "" then else BatStatus(0,19,Battery12) end
-if Batterys_Bank[13] == "" then else BatStatus(0,20,Battery13) end
-if Batterys_Bank[14] == "" then else BatStatus(0,21,Battery14) end
-if Batterys_Bank[15] == "" then else BatStatus(0,22,Battery15) end
-if Batterys_Bank[16] == "" then else BatStatus(0,23,Battery16) end
-if Batterys_Bank[17] == "" then else BatStatus(0,24,Battery17) end
-if Batterys_Bank[18] == "" then else BatStatus(0,25,Battery18) end
-if Batterys_Bank[19] == "" then else BatStatus(0,26,Battery19) end
-if Batterys_Bank[20] == "" then else BatStatus(0,27,Battery20) end
+--print("Item List Empty")
+DronePorts()
+
 
 end --## ITEM LIST ############################################
 
@@ -851,14 +607,13 @@ end
 
 while true do
 write(0,0,"Booting System Up")
---computer.reset()
 Boot()
 --print(FLAG)
 MainLoop()
 
 --ErrorBoxDis(0,50)
   if EnableStausLight == true then
-   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,1) end
+   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,10.0) end
     if FLAG == 1 then Blink() end
   end
     
@@ -868,7 +623,7 @@ if FLAG == 1 then if Sec == 30 then selfTest() end else TEST = 0 end
 if EnableScreen == true then gpu:flush() end
 sleep(Refresh_Rate)
 Sec = Sec + 1
---Tick = Tick + 1
+Tick = Tick + 1
 gpu:flush()
 -- Screen System Main P3/3 End--
 end -- while true loop end
