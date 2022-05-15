@@ -1,5 +1,5 @@
 Build = "1027-0201DEV-0003    "
-
+-- 
 
 -- Status Light #############################
 PAN = {"StorageManager",0,0,1,0,40,0,1}
@@ -7,57 +7,64 @@ ConPan = 0
 -- ##########################################
 
 
-SiteName = "Storage Site 1"
+SiteName = "Store Site 1"
 CBeep            = false
 EnableStausLight = true
-AlertForAnyPWR   = true -- if this is true then any pwr issues will need change the status light, false it will not trigger onlyin the display you will see issues
 EnableScreen     = true
 ConPercentages   = false
-LiqPercentages   = false
-GasPercentages   = false
--- ServerLogger  = false
--- ServerAddress = "" -- Work in progress
--- NetworkCard   = "" -- Work in progress
+ServerConnected  = true
+DirectConnection = true
 
 -- ITEM LIST ############################################################################################
                   ListVer = "4.0.0"
 -- Stacks,Display Name, ConErr, LigErr, PwrErr, RadioActive 1Y 0N, System Name 
                       VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
-      ReinforcedIronPlate = {100 ,"Reinforced Iron Plate       ",0,0,0,0,"ReinforcedIronPlate"}
-                    Cable = {200 ,"Cable                       ",0,0,0,0,"Cable"}
-                     Wire = {500 ,"Wire                        ",0,0,0,0,"Wire"}
-                 Concrete = {500 ,"Concrete                    ",0,0,0,0,"Concrete"}
-               IronPlates = {200 ,"Iron Plates                 ",0,0,0,0,"IronPlates"}
-                 IronRods = {200 ,"Iron Rods                   ",0,0,0,0,"IronRods"}
-        HeavyModularFrame = {50  ,"Heavy Modular Frame         ",0,0,0,0,"HeavyModularFrame"}
-                SteelPipe = {100 ,"Steel Pipe                  ",0,0,0,0,"SteelPipe"}
-      AlcladAluminumSheet = {100 ,"Alclad Aluminum Sheet       ",0,0,0,0,"AlcladAluminumSheet"}
-           AluminumCasing = {100 ,"Aluminum Casing             ",0,0,0,0,"AluminumCasing"}
-                   Screws = {500 ,"Screws                      ",0,0,0,0,"Screws"}
-                SteelBeam = {100 ,"Steel Beam                  ",0,0,0,0,"SteelBeam"}
-                Quickwire = {500 ,"Quickwire                   ",0,0,0,0,"Quickwire"}
-              CopperSheet = {200 ,"Copper Sheet                ",0,0,0,0,"CopperSheet"}
-                 Computer = {50  ,"Computer                    ",0,0,0,0,"Computer"}
-             CircuitBoard = {200 ,"CircuitBoard                ",0,0,0,0,"CircuitBoard"}
-                    Rotor = {100 ,"Rotor                       ",0,0,0,0,"Rotor"}
-         RadioControlUnit = {50  ,"Radio Control Unit          ",0,0,0,0,"RadioControlUnit"}
-                    Motor = {50  ,"Motor                       ",0,0,0,0,"Motor"}
-                   Rubber = {200 ,"Rubber                      ",0,0,0,0,"Rubber"}
-       HighSpeedConnector = {100 ,"High Speed Connector        ",0,0,0,0,"HighSpeedConnector"}
-                  Plastic = {200 ,"Plastic                     ",0,0,0,0,"Plastic"}
-             ModularFrame = {50  ,"Modular Frame               ",0,0,0,0,"ModularFrame"}
-            Supercomputer = {50  ,"Supercomputer               ",0,0,0,0,"Supercomputer"}
-            QuartzCrystal = {100 ,"Quartz Crystal              ",0,0,0,0,"QuartzCrystal"}
-        CrystalOscillator = {100 ,"Crystal Oscillator          ",0,0,0,0,"CrystalOscillator"}
-    EncasedIndustrialBeam = {100 ,"Encased Industrial Beam     ",0,0,0,0,"EncasedIndustrialBeam"}
-            PortableMiner = {100 ,"PortableMiner       ",0,0,0,0,"PortableMiner"}
-                AILimiter = {100 ,"A.I. Limiter                ",0,0,0,0,"AILimiter"}
-               TurboMotor = {50  ,"Turbo Motor                 ",0,0,0,0,"TurboMotor"}
-                   Beacon = {100 ,"Beacon                      ",0,0,0,0,"Beacon"}
-            CoolingSystem = {100 ,"CoolingSystem               ",0,0,0,0,"CoolingSystem"}
-        FusedModularFrame = {50  ,"Fused Modular Frame         ",0,0,0,0,"FusedModularFrame"}
-                   Stator = {100 ,"Stator                      ",0,0,0,0,"Stator"}
+-- Ground Floor
+
+IronPlates = {200 ,"Iron Plates                 ",0,0,0,0,"IronPlates"}
+IronRods = {200 ,"Iron Rods                   ",0,0,0,0,"IronRods"}
+Wire = {500 ,"Wire                        ",0,0,0,0,"Wire"}
+Cable = {200 ,"Cable                       ",0,0,0,0,"Cable"}
+Concrete = {500 ,"Concrete                    ",0,0,0,0,"Concrete"}
+ReinforcedIronPlate = {100 ,"Reinforced Iron Plate       ",0,0,0,0,"ReinforcedIronPlate"}
+HeavyModularFrame = {50  ,"Heavy Modular Frame         ",0,0,0,0,"HeavyModularFrame"}
+SteelPipe = {100 ,"Steel Pipe                  ",0,0,0,0,"SteelPipe"}
+AlcladAluminumSheet = {100 ,"Alclad Aluminum Sheet       ",0,0,0,0,"AlcladAluminumSheet"}
+AluminumCasing = {100 ,"Aluminum Casing             ",0,0,0,0,"AluminumCasing"}
+Screws = {500 ,"Screws                      ",0,0,0,0,"Screws"}
+SteelBeam = {100 ,"Steel Beam                  ",0,0,0,0,"SteelBeam"}
+Quickwire = {500 ,"Quickwire                   ",0,0,0,0,"Quickwire"}
+CopperSheet = {200 ,"Copper Sheet                ",0,0,0,0,"CopperSheet"}
+Computer = {50  ,"Computer                    ",0,0,0,0,"Computer"}
+CircuitBoard = {200 ,"CircuitBoard                ",0,0,0,0,"CircuitBoard"}
+Rotor = {100 ,"Rotor                       ",0,0,0,0,"Rotor"}
+RadioControlUnit = {50  ,"Radio Control Unit          ",0,0,0,0,"RadioControlUnit"}
+Motor = {50  ,"Motor                       ",0,0,0,0,"Motor"}
+ModularFrame = {50  ,"Modular Frame               ",0,0,0,0,"ModularFrame"}
+
+--Floor 2
+
+Rubber = {200 ,"Rubber                      ",0,0,0,0,"Rubber"}
+HighSpeedConnector = {100 ,"High Speed Connector        ",0,0,0,0,"HighSpeedConnector"}
+Plastic = {200 ,"Plastic                     ",0,0,0,0,"Plastic"}
+Supercomputer = {50  ,"Supercomputer               ",0,0,0,0,"Supercomputer"}
+QuartzCrystal = {100 ,"Quartz Crystal              ",0,0,0,0,"QuartzCrystal"}
+CrystalOscillator = {100 ,"Crystal Oscillator          ",0,0,0,0,"CrystalOscillator"}
+EncasedIndustrialBeam = {100 ,"Encased Industrial Beam     ",0,0,0,0,"EncasedIndustrialBeam"}
+PortableMiner         = {100 ,"PortableMiner       ",0,0,0,0,"PortableMiner"}
+AILimiter = {100 ,"A.I. Limiter                ",0,0,0,0,"AILimiter"}
+TurboMotor = {50  ,"Turbo Motor                 ",0,0,0,0,"TurboMotor"}
+Beacon = {100 ,"Beacon                      ",0,0,0,0,"Beacon"}
+CoolingSystem = {100 ,"CoolingSystem               ",0,0,0,0,"CoolingSystem"}
+FusedModularFrame = {50  ,"Fused Modular Frame         ",0,0,0,0,"FusedModularFrame"}
+Stator = {100 ,"Stator                      ",0,0,0,0,"Stator"}
 ElectromagneticControlRod = {100 ,"Electromagnetic Control Rod ",0,0,0,0,"ElectromagneticControlRod"}
+VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+
 --#######################################################################################################
 
 
@@ -76,16 +83,44 @@ function ContainerList()
 
 
 
---ConStatus(8,Cable)
---ConStatus(9,Wire)
---ConStatus(10,Computer)
---ConStatus(2,5,CateriumOre,4,0,true,true)
---ConStatus(2,6,IronOre,5,0,true,true)
---ConStatus(2,7,RawQuartz,6,0,true,true)
---ConStatus(2,8,Sulfur,7,0,true,true)
---ConStatus(2,9,Bauxite,8,0,true,true)
---ConStatus(2,10,Uranium,9,0,true,true)
---ConStatus(129,2,NuclearWaste,1,1,true,false)
+ConStatus(8,IronPlates,1,1)
+ConStatus(9,IronRods,1,2)
+ConStatus(10,Wire,1,3)
+ConStatus(11,Cable,1,4)
+--ConStatus(12,Concrete,1,5)
+--ConStatus(13,ReinforcedIronPlate,1,6)
+--ConStatus(14,HeavyModularFrame,1,7)
+--ConStatus(15,SteelPipe,1,8)
+--ConStatus(16,AlcladAluminumSheet,1,9)
+--ConStatus(17,AluminumCasing,1,10)
+--ConStatus(18,Screws,1,11)
+--ConStatus(19,SteelBeam,1,12)
+--ConStatus(20,Quickwire,1,13)
+--ConStatus(21,CopperSheet,1,14)
+--ConStatus(22,Computer,1,15)
+--ConStatus(23,CircuitBoard,1,16)
+--ConStatus(24,Rotor,1,17)
+--ConStatus(25,RadioControlUnit,1,18)
+--ConStatus(26,Motor,1,19)
+--ConStatus(27,ModularFrame,1,20)
+--ConStatus(28,Rubber,1,21)
+--ConStatus(29,HighSpeedConnector,1,22)
+--ConStatus(30,Plastic,1,23)
+--ConStatus(31,Supercomputer,1,24)
+--ConStatus(32,QuartzCrystal,1,25)
+--ConStatus(33,CrystalOscillator,1,26)
+--ConStatus(34,EncasedIndustrialBeam,1,27)
+--ConStatus(35,PortableMiner,1,28)
+--ConStatus(36,AILimiter,1,29)
+--ConStatus(37,TurboMotor,1,30)
+--ConStatus(38,Beacon,1,31)
+--ConStatus(39,CoolingSystem,1,32)
+--ConStatus(40,FusedModularFrame,1,33)
+--ConStatus(41,Stator,1,34)
+--ConStatus(42,ElectromagneticControlRod,1,35)
+--ConStatus(43,Stator,1,36)
+
+
 end --## ITEM LIST ############################################
 
 
@@ -100,17 +135,24 @@ end --## ITEM LIST ############################################
 --############################################################################
 --TEST AREA
 --############################################################################
-server = "0A6327714236EABC4C7C879916A8C876" -- (network Card)
-netcard = component.proxy("2C3CF1544EF6734B3844E5BD84A556B2")
-
-function Send(port,receiver,message)
-netcard:open(port)
-netcard:send(receiver, port, message)
+print("Server-Sender-v0.0.3")
+SwitchServer = "DC73C2544A7BF761FB9BED8C695A5678"
+--Port = 3
+netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
+for n = 1,40 do
+netcard:open(n)
 end
 
---Send(0001,server, "Booting")
 
---print("Message sent to server")
+function SendToServer(Server, Port, Data)
+netcard:send(Server, Port, Data)
+--print(Server.."|"..Port.."|"..Data)
+end
+
+--SendToServer(SwitchServer,Port,"IronPlates")
+
+
+
 --############################################################################
 --TEST AREA
 --############################################################################
@@ -161,9 +203,9 @@ text.size = PAN[6]
 text.text = "Storage Manager" 
 end
 dev = 0
-local ProgName = ("Ficsit Production Manager 3030")
+local ProgName = ("Ficsit Storage Manager 3030   ")
 local By = ("Skyamoeba")
-local Ver = ("0.0.1")
+local Ver = ("0.0.1 ")
 local currentver    = 1
 local MVer = ("0.3.7")
 local currentModVer = 37
@@ -185,7 +227,32 @@ gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
 
-function ConStatus(DisY,Contents,ConType)
+function Connection(x,y,Contents)
+if FLAG == 0 then
+ if TEST == 1 then
+  Contents[5] = 0
+  end
+end
+
+function GPwrSwitch()
+Comp = component.proxy(component.findComponent(x)[1])
+end
+
+
+if Contents[5] == 1 then else
+if pcall (GPwrSwitch) then
+
+GPwrSwitch()
+
+Comp.isSwitchOn = y
+
+else 
+ FLAG = 1 print(ERR[5]..Contents[7]) Contents[5] = 1 
+end
+end
+end --Function Connection End
+
+function ConStatus(DisY,Contents,ConType,Port)
 if FLAG == 0 then
  if TEST == 1 then
   Contents[3] = 0
@@ -233,13 +300,13 @@ end
 if ConType == 1 then -- "Large"
 if Contents[1] == 50 then x = 2399 y = 1199 z = 200 end
 if Contents[1] == 100 then x = 4799 y = 2400 z = 800 end
-if Contents[1] == 200 then x = 4799 y = 1600 z = 1000 end
+if Contents[1] == 200 then x = 9599 y = 1600 z = 1000 end
 if Contents[1] == 500 then x = 23999 y = 11999 z = 1000 end
 end
 
-a = x + 1
-rawpercent = conSum / a * 100/1 
-percent= round(rawpercent)
+--a = x + 1
+--rawpercent = conSum / a * 100/1 
+--percent= round(rawpercent)
 
 -- Screen List Start
 if EnableScreen == true then
@@ -253,19 +320,50 @@ write(48,DisY,MaxLvl) -- MaxAmount in Container
 
 write(59,DisY,Cont_Size) -- Slot amount in Container
 
-if conSum > 0 then
-if conSum == MaxLvl then gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(69,DisY," Full     ") end
+--if conSum > x then
+if conSum ==  MaxLvl then gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(69,DisY," Full     ") --end
+
+if ServerConnected == true then 
+if Sec == 30 then SendToServer(SwitchServer,Port,Contents[7].." Full")
+gpu:setForeground(0,0,0,1) 
+gpu:setBackground(1,1,1,0)
+write(82,DisY,"                             ") 
+end
 end
 
+if DirectConnection == true then
+Connection(Power,false,Contents) 
+gpu:setForeground(0,0,0,1) 
+gpu:setBackground(1,1,1,0)
+write(82,DisY,"                             ") 
+end
+else
 
 if conSum < MaxLvl then  gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(69,DisY," FreeSlot ") end
+
+if ServerConnected == true then
+if Sec == 30 then 
+SendToServer(SwitchServer,Port,Contents[7])
+gpu:setForeground(0,0,0,1) 
+gpu:setBackground(1,1,1,0) 
+write(82,DisY," Item Requested From Factory ")
+end
+end
+
+if DirectConnection == true then 
+Connection(Power,true,Contents)
+gpu:setForeground(0,0,0,1) 
+gpu:setBackground(1,1,0,1) 
+write(82,DisY," Item Requested From Factory ")
+end
+
 if conSum < 100 then     gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1) write(69,DisY," Low      ") end
 if conSum == 0 then      gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1) write(69,DisY," Empty    ") end
---if Status == 0 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,0.5) write(x,y," Idle        ") end
---if Status == 1 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,0.5) write(x,y," Idle Empty  ") end
---if Status == 2 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(x,y," Idle Full   ") end
---if Status == 3 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,1,0.5) write(x,y," Charging    ") end
---if Status == 4 then x = x + 12 gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,0.5) write(x,y," In Use      ") end
+
+
+
+
+end
 
 end
 --Screen List End
@@ -387,7 +485,7 @@ end
 end
 
 function UpdateDisplay()
-write(37,1,"Tank Site Name    : "..SiteName)
+write(37,1,"Storage Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
 if currentver < VersionStorage then 
 gpu:setForeground(0,0,0,1)
@@ -419,6 +517,20 @@ gpu:setBackground(0,1,0,1)
 write(57,3,"MOD Up-To-Date")
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
+end
+end
+
+function ServerStatus()
+if ServerConnected == true then 
+write(37,4,"Server Connected  : ") 
+gpu:setForeground(0,0,0,1)
+gpu:setBackground(0,1,0,1)
+write(57,4,"Item Request Avaliable")
+else
+write(37,4,"Server Connected  : ") 
+gpu:setForeground(0,0,0,1)
+gpu:setBackground(0,1,0,1)
+write(57,4,"Unmanaged Fill Only")
 end
 end
 
@@ -641,6 +753,7 @@ Sys_GridOverview(0,30)
 Sys_BatDis(0,7)
 UpdateDisplay()
 ContainerList()
+ServerStatus()
 
 if Cat == 0 then
 Cat = 1

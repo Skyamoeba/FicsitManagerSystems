@@ -1,7 +1,8 @@
-Build = "0001-0201FIC-1025    "
+eBuild = "0001-0201FIC-1025    "
 
 
 -- Status Light #############################
+STA = "StatusLight"
 PAN = {"BatteryManager",0,0,1,0,40,0,1}
 ConPan = 0
 -- ##########################################
@@ -73,6 +74,7 @@ end
 dev = 0
 local ProgName = ("Ficsit Battery Manager 3030   ")
 local By = ("Skyamoeba")
+
 local Ver = ("1.0.0")
 local currentver    = 100
 local MVer = ("0.3.7")
@@ -201,6 +203,14 @@ end
 
 end
 --End Of Updater
+
+
+
+
+
+
+
+
 
 --- LightStatus Pole V2 ---
 LightSys = {"Light System Ver : ","2.0.1"}

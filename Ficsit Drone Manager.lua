@@ -613,7 +613,7 @@ MainLoop()
 
 --ErrorBoxDis(0,50)
   if EnableStausLight == true then
-   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,10.0) end
+   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,1) end
     if FLAG == 1 then Blink() end
   end
     
