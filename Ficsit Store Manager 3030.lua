@@ -205,8 +205,8 @@ end
 dev = 0
 local ProgName = ("Ficsit Storage Manager 3030   ")
 local By = ("Skyamoeba")
-local Ver = ("0.0.1 ")
-local currentver    = 1
+local Ver = ("1.0.0 ")
+local currentver    = 100
 local MVer = ("0.3.7")
 local currentModVer = 37
 local BFlag = 0
