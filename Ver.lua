@@ -1,8 +1,8 @@
 function MODVerD()
-  return 36
+  return 38
   end
 function MODVerP()
-  return "0.3.6"
+  return "0.3.8"
   end
 
 -- Test Area Version Checker
