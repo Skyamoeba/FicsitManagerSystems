@@ -425,7 +425,7 @@ if not card then
   return
 end
 
-local req = card:request("https://raw.githubusercontent.com/Skyamoeba/FicsitNetworksPrograms-/main/Ver.lua", "GET", "")
+local req = card:request("https://raw.githubusercontent.com/Skyamoeba/FicsitManagerSystems/main/Ver.lua", "GET", "")
 local _, Ver = req:await()
 filesystem.initFileSystem("/dev")
 filesystem.makeFileSystem("tmpfs", "tmp")
