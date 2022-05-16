@@ -8,13 +8,11 @@ netcard:open(n)
 end
 print("Ports Opened")
 
-flag = {0,""}
+flag = {0}
 
-Factory_Names = {"Storage","Storage","Storage","Storage"}
+Factory_Names = {"Storage Manager"}
 
-wire = {"IronPlates","IronRods","Wire","Cable"}
-
-print("Switch Server for Ficsit Storage Manager 3030")
+print("Hub Server for Ficsit Storage Manager 3030")
 print("v-0.0.3")
 print("Running....")
 
@@ -27,17 +25,6 @@ local millis = computer.millis()
     end
 end
 
-function EXT_Connection(Switch,State)
-function Connection_GPwrSwitch()
-Comp = component.proxy(component.findComponent(Switch)[1])
-end -- END Connection_GPwrSwitch()
-Connection_GPwrSwitch()
-Comp.isSwitchOn = State
---ReturnState = Comp.isBridgeActive
---return ReturnState
-end -- END EXT_Connection
-
-
 function CheckNetwork()
     --event.listen(netcard)
     e, s, sender, port, message = event.pull()
@@ -46,60 +33,27 @@ sender = "Storage"
         print(sender.." | " .. port.." | ".. message)
 --if sender == "Copper Factory" then Factory_Copper = message end
 if sender == "Storage" then
- if message == "Error" then
+  if message == "Error" then
    computer.beep(1)
-   flag[1] = 1
-end
-if message == wire[port] then
- EXT_Connection(wire[port],true)
-print("Switch On")
-end
-if message ==  wire[port].." Full" then
- EXT_Connection(wire[port],false)
-print("Switch Off")
+    flag[port] = 1
+     end
+if message == "Error Fixed" then
+ print(Factory_Names[port].." System : Running Normal")
+ flag[port] = 0
 end
 end
     
 
 end
- end
-
-function CheckIronPlates()
-    --event.listen(netcard)
-    e, s, sender, port, message = event.pull()
-    if e == "NetworkMessage" then
-sender = Factory_Names[port]
-        print(sender.." | " .. port.." | ".. message)
---if sender == "Copper Factory" then Factory_Copper = message end
-if sender == "Storage" then
- if message == "Error" then
-   computer.beep(1)
-   flag[1] = 1
-end
-if message == "IronPlates" then
- EXT_Connection("IronPlates",true)
-print("Switch On")
-end
-if message ==  "IronPlates Full" then
- EXT_Connection("IronPlates",false)
-print("Switch Off")
-end
-end
-    
-
-end
- end
-
-
+ end --CheckNetwork
 
 
 while true do
 CheckNetwork()
---CheckIronPlates()
 
-if flag[1] == 1 then
+if flag[port] == 1 then
 print("Flash Light")
-print("[System] : Error at : "..Factory_Names[port])
+print("[System] : Error at "..Factory_Names[port])
 end
 --sleep(0.1)
 end

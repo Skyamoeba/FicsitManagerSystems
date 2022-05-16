@@ -1,5 +1,5 @@
 Build = "1027-0201DEV-0003    "
--- 
+-- Program 1 / 6
 
 -- Status Light #############################
 PAN = {"StorageManager",0,0,1,0,40,0,1}
@@ -87,22 +87,24 @@ ConStatus(8,IronPlates,1,1)
 ConStatus(9,IronRods,1,2)
 ConStatus(10,Wire,1,3)
 ConStatus(11,Cable,1,4)
---ConStatus(12,Concrete,1,5)
---ConStatus(13,ReinforcedIronPlate,1,6)
---ConStatus(14,HeavyModularFrame,1,7)
---ConStatus(15,SteelPipe,1,8)
---ConStatus(16,AlcladAluminumSheet,1,9)
---ConStatus(17,AluminumCasing,1,10)
---ConStatus(18,Screws,1,11)
---ConStatus(19,SteelBeam,1,12)
---ConStatus(20,Quickwire,1,13)
---ConStatus(21,CopperSheet,1,14)
---ConStatus(22,Computer,1,15)
---ConStatus(23,CircuitBoard,1,16)
---ConStatus(24,Rotor,1,17)
---ConStatus(25,RadioControlUnit,1,18)
---ConStatus(26,Motor,1,19)
---ConStatus(27,ModularFrame,1,20)
+ConStatus(12,Concrete,1,5)
+ConStatus(13,ReinforcedIronPlate,1,6)
+ConStatus(14,HeavyModularFrame,1,7)
+ConStatus(15,SteelPipe,1,8)
+ConStatus(16,AlcladAluminumSheet,1,9)
+ConStatus(17,AluminumCasing,1,10)
+ConStatus(18,Screws,1,11)
+ConStatus(19,SteelBeam,1,12)
+ConStatus(20,Quickwire,1,13)
+ConStatus(21,CopperSheet,1,14)
+ConStatus(22,Computer,1,15)
+ConStatus(23,CircuitBoard,1,16)
+ConStatus(24,Rotor,1,17)
+ConStatus(25,RadioControlUnit,1,18)
+ConStatus(26,Motor,1,19)
+ConStatus(27,ModularFrame,1,20)
+
+--Page 2
 --ConStatus(28,Rubber,1,21)
 --ConStatus(29,HighSpeedConnector,1,22)
 --ConStatus(30,Plastic,1,23)
@@ -118,7 +120,7 @@ ConStatus(11,Cable,1,4)
 --ConStatus(40,FusedModularFrame,1,33)
 --ConStatus(41,Stator,1,34)
 --ConStatus(42,ElectromagneticControlRod,1,35)
---ConStatus(43,Stator,1,36)
+
 
 
 end --## ITEM LIST ############################################
@@ -136,15 +138,17 @@ end --## ITEM LIST ############################################
 --TEST AREA
 --############################################################################
 print("Server-Sender-v0.0.3")
-SwitchServer = "DC73C2544A7BF761FB9BED8C695A5678"
---Port = 3
-netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
-for n = 1,40 do
-netcard:open(n)
-end
+HubServer = "DC73C2544A7BF761FB9BED8C695A5678"
+Port = 1
+--netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
+--for n = 1,40 do
+--netcard:open(n)
+--end
 
 
 function SendToServer(Server, Port, Data)
+netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
+netcard:open(Port)
 netcard:send(Server, Port, Data)
 --print(Server.."|"..Port.."|"..Data)
 end
@@ -227,7 +231,7 @@ gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
 
-function Connection(x,y,Contents)
+function Connection(x,y,Contents,DisY)
 if FLAG == 0 then
  if TEST == 1 then
   Contents[5] = 0
@@ -247,7 +251,14 @@ GPwrSwitch()
 Comp.isSwitchOn = y
 
 else 
- FLAG = 1 print(ERR[5]..Contents[7]) Contents[5] = 1 
+ FLAG = 1 print(ERR[5]..Contents[7])
+ gpu:setForeground(0,0,0,10) gpu:setBackground(1,0,0,0.5)
+write(2,DisY,Contents[2])
+gpu:setForeground(0,0,0,10) gpu:setBackground(1,0,0,0.5)
+write(69,DisY," Error    ")
+gpu:setForeground(1,1,1,10) gpu:setBackground(0,0,0,0)
+write(82,DisY,"Power Connection")
+ Contents[5] = 1 
 end
 end
 end --Function Connection End
@@ -324,37 +335,26 @@ write(59,DisY,Cont_Size) -- Slot amount in Container
 if conSum ==  MaxLvl then gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(69,DisY," Full     ") --end
 
 if ServerConnected == true then 
-if Sec == 30 then SendToServer(SwitchServer,Port,Contents[7].." Full")
-gpu:setForeground(0,0,0,1) 
-gpu:setBackground(1,1,1,0)
-write(82,DisY,"                             ") 
-end
 end
 
 if DirectConnection == true then
-Connection(Power,false,Contents) 
 gpu:setForeground(0,0,0,1) 
 gpu:setBackground(1,1,1,0)
-write(82,DisY,"                             ") 
+write(82,DisY,"                             ")
+Connection(Power,false,Contents,DisY) 
 end
 else
 
 if conSum < MaxLvl then  gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(69,DisY," FreeSlot ") end
 
 if ServerConnected == true then
-if Sec == 30 then 
-SendToServer(SwitchServer,Port,Contents[7])
-gpu:setForeground(0,0,0,1) 
-gpu:setBackground(1,1,1,0) 
-write(82,DisY," Item Requested From Factory ")
-end
 end
 
-if DirectConnection == true then 
-Connection(Power,true,Contents)
+if DirectConnection == true then
 gpu:setForeground(0,0,0,1) 
 gpu:setBackground(1,1,0,1) 
 write(82,DisY," Item Requested From Factory ")
+Connection(Power,true,Contents,DisY)
 end
 
 if conSum < 100 then     gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1) write(69,DisY," Low      ") end
@@ -803,10 +803,16 @@ MainLoop()
 
 --ErrorBoxDis(0,50)
   if EnableStausLight == true then
-   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,10.0) end
+   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,1) end
     if FLAG == 1 then Blink() end
   end
-    
+
+if FLAG == 1 then 
+if Sec == 30 then SendToServer(HubServer, 1, "Error") end 
+else 
+if Sec == 30 then SendToServer(HubServer, 1, "Error Fixed") end 
+end
+   
 if FLAG == 1 then if Sec == 30 then selfTest() end else TEST = 0 end
 
 -- Screen System Main P3/3 ##############################################################################--
