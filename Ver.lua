@@ -63,3 +63,12 @@ function VerCheckStoreP()
   return "1.0.0"
   end
 -- End Store Manager Version Checker
+
+-- Power Manager Version Checker
+function VerCheckPowerD()
+  return 100
+  end
+function VerCheckPowerP()
+  return "1.0.0"
+  end
+-- End Power Manager Version Checker
