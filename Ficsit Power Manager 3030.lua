@@ -25,15 +25,23 @@ NetworkCard      = "989413BC4CB77125E97DC5B94290D58B" -- Work in progress
 DataPort         = 3
 --###### End Of LNS ######
 
-Power_Monitor  = "PWRIncoming" --State the network connection for the incoming power
-Power_Main     = {1 ,"Building 1      ",0,0,0,0,"PowerMain"}
-Power_Transport= {1 ,"Building 1      ",0,0,0,0,"PowerTransport"}
-Power_Battery  = {1 ,"Building 1      ",0,0,0,0,"PowerBattery"}
-Power_HyperTube= {1 ,"Building 1      ",0,0,0,0,"PowerHypertube"}
+--Power_Monitor  = "PWRIncoming" --State the network connection for the incoming power
+
+-- Power Monitoring
+Power_Main     = {1 ,"Main Power      ",0,0,0,0,"PowerMain"}
+Power_Transport= {1 ,"Transport       ",0,0,0,0,"PowerTransport"}
+Power_Battery  = {1 ,"Battery         ",0,0,0,0,"PowerBattery"}
+Power_HyperTube= {1 ,"Hypertube       ",0,0,0,0,"PowerHypertube"}
+
+--Main Contactors
+Switch_Main     = {1 ,"Main Switch    ",0,0,0,0,"SwitchMain"}
 
 
 function ITEMLIST()
-if PWRIncoming == "" then print("[System] : Power Probe Not Setup") else PWRStatus(22,PWRIncoming) end
+PWRStatus(8,Power_Main)
+PWRStatus(9,Power_Transport)
+PWRStatus(10,Power_Battery)
+PWRStatus(11,Power_HyperTube)
 
 end --## ITEM LIST ############################################
 
@@ -170,8 +178,8 @@ filesystem.doFile("Ver.lua")
 
 ModVersion = MODVerD()
 ModVerPrint= MODVerP()
-VersionBatt= VerCheckBattD()
-VerPrint = VerCheckBattP()
+VersionBatt= VerCheckPowerD()
+VerPrint = VerCheckPowerP()
 
 if currentModVer < ModVersion then
 print("[FINSYS] : Update Avliable for Ficsit Networks")
@@ -337,7 +345,6 @@ end
 
 
 function PWRStatus(DisY,Contents) --########################################################################################
-DisX = 2
 if FLAG == 0 then
  if TEST == 1 then
   Contents[3] = 0
@@ -377,36 +384,37 @@ Capacity   = Circuit.capacity
 Consumption= Circuit.consumption
 Fused      = Circuit.isFuesed
 
-x = DisX
-y = DisY
-x = x + 2
-y = y + 1
+write(2,DisY,Contents[2])
 
-write(2,y,round(Production))
-y = y + 1
-write(x,y,round(Capacity))
-y = y + 1
-write(x,y,round(Consumption))
-y = y + 1
-write(x,y,"Fuse Status: ")
+write(39,DisY,round(Production))
+
+--write(50,DisY,round(Capacity))
+
+write(50,DisY,round(Consumption))
+
+--write(61,DisY,"Fuse Status: ")
 
 if Fused == true then 
 gpu:setForeground(1,0,0,1)
+gpu:setBackground(1,1,1,0)
+write(64,y,"===/  /===")
+
+-- Text in Error Box
+gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,0,0,1)
-x = x + 13
-write(x,y,"###")
+write(77,y,"Fuse Blown")
+
 FLAG = 1
 else 
 gpu:setForeground(0,1,0,1)
-gpu:setBackground(0,1,0,1)
-x = x + 13
-write(x,y,"###")
+gpu:setBackground(0,1,0,0)
+
+write(64,y,"Normal    ")
 if AlertForAnyPWR == false then FLAG = 0 end
 -- Flash Light / Sound
 end
 end
-  --else FLAG = 1 print(ERR[6]..Contents[7]) Contents[3] = 1
- end
+
 end
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
@@ -554,51 +562,58 @@ write(x,y,"O--------------------------------------------------------------------
 end
 
 function Sys_BatDis(x,y,Contents)
-write(x,y,"O=[ Circuit Name ] ==================O=[ Prod ]=O=[ Time E/F ]=O=[ Consuption ]=O=[ Status ]====O=[ Errors ]======O")
+function Sys_LineBreak(x,y)
+write(x,y,"|                                    |          |             |            |                                      |")
+end
+function Sys_EndBreak(x,y)
+write(x,y,"O====================================O==========O=============O============O======================================O")
+end
+
+write(x,y,"O=[ Circuit Name ] ==================O=[ Prod ]=O=[ Consump ]=O=[ Status ]=O=[ Error ]============================O")
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"|                                    |          |              |                |               |                 |")
+Sys_LineBreak(x,y)
 y = y + 1
-write(x,y,"O====================================O==========O==============O================O===============O=================O")
+Sys_EndBreak(x,y)
 --gpu:flush()
 end
 
@@ -689,8 +704,9 @@ SystemInfo(0,0) -- Default 83,0
 Sys_OverView(34,0)
 Sys_GridOverview(0,30)
 Sys_BatDis(0,7)
-ITEMLIST()
 UpdateDisplay()
+ITEMLIST()
+
 
 if Cat == 0 then
 Cat = 1
