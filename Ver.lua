@@ -1,9 +1,12 @@
+-- Mod Ver Notification
 function MODVerD()
   return 37
   end
 function MODVerP()
   return "0.3.7"
   end
+
+-- End Mod Ver Notification
 
 -- Test Area Version Checker
 function VersionCheckBatt()
