@@ -4,7 +4,6 @@ Build = "0001-0201FIC-1025    "
 
 
 -- Status Light #############################
-STA = "StatusLight"
 PAN = {"PowerManager",0,0,1,0,40,0,1}
 ConPan = 0
 -- ##########################################
@@ -12,7 +11,6 @@ ConPan = 0
 
 SiteName = "Power Manager"
 Refresh_Rate = 1
---FicsItNetworksVer= "0.2.1"
 CBeep            = false
 EnableStausLight = true
 AlertForAnyPWR   = true -- if this is true then any pwr issues will need change the status light, false it will not trigger onlyin the display you will see issues
@@ -28,10 +26,10 @@ DataPort         = 3
 --Power_Monitor  = "PWRIncoming" --State the network connection for the incoming power
 
 -- Power Monitoring
-Power_Main     = {1 ,"Main Power      ",0,0,0,0,"PowerMain"}
-Power_Transport= {1 ,"Transport       ",0,0,0,0,"PowerTransport"}
-Power_Battery  = {1 ,"Battery         ",0,0,0,0,"PowerBattery"}
-Power_HyperTube= {1 ,"Hypertube       ",0,0,0,0,"PowerHypertube"}
+Power_Main     = {20 ,"Main Power      ",0,0,0,0,"PowerMain"}
+Power_Transport= {20 ,"Transport       ",0,0,0,0,"PowerTransport"}
+Power_Battery  = {20 ,"Battery         ",0,0,0,0,"PowerBattery"}
+Power_HyperTube= {20 ,"Hypertube       ",0,0,0,0,"PowerHypertube"}
 
 --Main Contactors
 Switch_Main     = {1 ,"Main Switch    ",0,0,0,0,"SwitchMain"}
@@ -79,6 +77,7 @@ SYS = {"[System] : Light Poles Disabled",
 FLAG = 0
 TEST = 0
 IND = 0
+UPD = 0
 ChkDis = false
 if EnableStausLight == true then
 StatusPanel = component.proxy(component.findComponent(PAN[1])[1]) 
@@ -246,16 +245,16 @@ end
 end
 
 function UpdateBlink()
-if IND == 1 then 
+if UPD == 1 then 
   UpdateStat:setcolor(1,1,0,10)
   text.text = VerPrint.." Update"
   if CBeep == true then computer.beep() end
-  IND = 0
+  UPD = 0
   computer.millis(1000)
 else
   text.text = "Power Manager"
   UpdateStat:setcolor(1,1,1,0)
-  IND = 1
+  UPD = 1
   computer.millis(1000)
 end
 --event.pull(1)
@@ -369,6 +368,8 @@ Production = Circuit.production
 Capacity   = Circuit.capacity
 Consumption= Circuit.consumption
 Fused      = Circuit.isFuesed
+TotalPwr   = Circuit.batteryStorePercent
+BatInput   = Circuit.batteryIn
 end
 
 
@@ -383,6 +384,7 @@ Production = Circuit.production
 Capacity   = Circuit.capacity
 Consumption= Circuit.consumption
 Fused      = Circuit.isFuesed
+PwrDiff    = Production - Consumption
 
 write(2,DisY,Contents[2])
 
@@ -392,27 +394,58 @@ write(39,DisY,round(Production))
 
 write(50,DisY,round(Consumption))
 
---write(61,DisY,"Fuse Status: ")
+write(61,DisY,round(PwrDiff))
 
+
+if RoundDP(PwrDiff) < Contents[1] then
+if Production == 0 then
 if Fused == true then 
 gpu:setForeground(1,0,0,1)
 gpu:setBackground(1,1,1,0)
-write(64,y,"===/  /===")
+write(72,y,"===/  /===")
 
 -- Text in Error Box
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,0,0,1)
-write(77,y,"Fuse Blown")
-
+write(85,y,"Fuse Blown                  ")
 FLAG = 1
+-- Flash Light / Sound
+else
+gpu:setForeground(1,0,0,1)
+gpu:setBackground(1,1,1,0)
+write(72,y,"Low Power ")
+-- Text in Error Box
+gpu:setForeground(1,1,1,1)
+gpu:setBackground(1,1,1,0)
+write(85,y,"Power Production Below Usage")
+FLAG = 1
+end
+
+end
+
+
+if Production > 0 then
+  if Consumption > 0 then
+    if PwrDiff == 0 then     
+gpu:setForeground(1,0,0,1)
+gpu:setBackground(1,1,1,0)
+write(72,y,"Pwr @ Max ")
+-- Text in Error Box
+gpu:setForeground(1,1,1,1)
+gpu:setBackground(1,1,1,0)
+write(85,y,"More Power Production Needed")
+FLAG = 1 
 else 
 gpu:setForeground(0,1,0,1)
 gpu:setBackground(0,1,0,0)
-
-write(64,y,"Normal    ")
+write(72,y,"Normal    ")
 if AlertForAnyPWR == false then FLAG = 0 end
 -- Flash Light / Sound
 end
+  end
+    end
+
+ end
 end
 
 end
@@ -563,13 +596,13 @@ end
 
 function Sys_BatDis(x,y,Contents)
 function Sys_LineBreak(x,y)
-write(x,y,"|                                    |          |             |            |                                      |")
+write(x,y,"|                                    |          |          |          |            |                              |")
 end
 function Sys_EndBreak(x,y)
-write(x,y,"O====================================O==========O=============O============O======================================O")
+write(x,y,"O====================================O==========O==========O==========O============O==============================O")
 end
 
-write(x,y,"O=[ Circuit Name ] ==================O=[ Prod ]=O=[ Consump ]=O=[ Status ]=O=[ Error ]============================O")
+write(x,y,"O=[ Circuit Name ] ==================O=[ Prod ]=O=[ Cons ]=O=[ Free ]=O=[ Status ]=O=[ Error ]====================O")
 y = y + 1
 Sys_LineBreak(x,y)
 y = y + 1
@@ -742,7 +775,8 @@ end
 
 function selfTest()
   if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 0.0,10.0) end
-  print(ERR[2])
+  --print(ERR[2])
+  write(2,31,ERR[2])
   FLAG = 0
   TEST = 1
 end
@@ -764,7 +798,7 @@ MainLoop()
 if FLAG == 1 then if Sec == 30 then selfTest() end else TEST = 0 end
 
 -- Screen System Main P3/3 ##############################################################################--
-if EnableScreen == true then gpu:flush() end
+--if EnableScreen == true then gpu:flush() end
 sleep(Refresh_Rate)
 Sec = Sec + 1
 --Tick = Tick + 1

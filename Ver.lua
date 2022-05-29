@@ -1,9 +1,12 @@
+-- Mod Ver Notification
 function MODVerD()
   return 37
   end
 function MODVerP()
   return "0.3.7"
   end
+
+-- End Mod Ver Notification
 
 -- Test Area Version Checker
 function VersionCheckBatt()
@@ -71,8 +74,12 @@ function VerCheckPowerD()
 function VerCheckPowerP()
   return "1.0.0"
   end
+<<<<<<< HEAD
 function KnownIssuesPower()
 write(2,31,"If Consuption == 0 then displays Power production below usage ########  FIX NEEDED / REWRITE")
 
 end
 -- End Power Manager Version Checker
+=======
+-- End Power Manager Version Checker
+>>>>>>> origin/main
