@@ -71,4 +71,8 @@ function VerCheckPowerD()
 function VerCheckPowerP()
   return "1.0.0"
   end
+function KnownIssuesPower()
+write(2,31,"If Consuption == 0 then displays Power production below usage ########  FIX NEEDED / REWRITE")
+
+end
 -- End Power Manager Version Checker
