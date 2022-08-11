@@ -60,10 +60,10 @@ function VerCheckGasP()
 
 -- Store Manager Version Checker
 function VerCheckStoreD()
-  return 100
+  return 101
   end
 function VerCheckStoreP()
-  return "1.0.0"
+  return "1.0.1"
   end
 -- End Store Manager Version Checker
 

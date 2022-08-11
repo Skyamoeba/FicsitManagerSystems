@@ -9,12 +9,14 @@ ConPan = 0
 -- ##########################################
 
 
+
 SiteName = "Power Manager"
 Refresh_Rate = 1
 CBeep            = false
 EnableStausLight = true
 AlertForAnyPWR   = true -- if this is true then any pwr issues will need change the status light, false it will not trigger onlyin the display you will see issues
 EnableScreen     = true
+EnableDiscord    = false -- In testing
 
 -- Local Network Settings
 ServerLogger     = false
@@ -73,7 +75,8 @@ ERR = {"[System] : Error Detected Starting Self Check ",
 SYS = {"[System] : Light Poles Disabled",
        "[System] : Power Poles Disabled",
        "[System] : Control Panel Lights Disabled", 
-       "[System] : Computer Screen Disabled"}
+       "[System] : Computer Screen Disabled",
+       "[System] : Booting Up"}
 FLAG = 0
 TEST = 0
 IND = 0
@@ -92,9 +95,9 @@ local ProgName = ("Ficsit Power Manager 3030     ")
 local By = ("Skyamoeba")
 
 local Ver = ("0.0.1")
-local currentver    = 1
-local MVer = ("0.3.7")
-local currentModVer = 37
+local currentver    = 100
+local MVer = ("0.3.8")
+local currentModVer = 38
 local BFlag = 0
 Page = 0
 fCont = {0,0,0,0,0,0,0,0,0,0,0}
@@ -199,8 +202,37 @@ end
 end
 --End Of Updater
 
+-- Discord Sender
+function EXT_Discord(Name,Message)
+-- get internet card
+local card = computer.getPCIDevices(findClass("FINInternetCard"))[1]
+
+-- get library from internet
+local req = card:request("https://raw.githubusercontent.com/Skyamoeba/FicsitManagerSystems/main/json.lua", "GET", "")
+local _, libdata = req:await()
+
+-- save library to filesystem
+filesystem.initFileSystem("/dev")
+filesystem.makeFileSystem("tmpfs", "tmp")
+filesystem.mount("/dev/tmp","/")
+local file = filesystem.open("json.lua", "w")
+file:write(libdata)
+file:close()
+
+-- load the library from the file system and use it
+local json = filesystem.doFile("json.lua")
 
 
+
+local req = card:request(
+    "https://discord.com/api/webhooks/985457918424006727/YpWWmvp2w3k0PZj4FVp_bqlSl260UNehrgxT4PGeR7fm2PI6aa0nObk0oaLyXTl8qig0",
+    "POST",
+    json.encode({username = Name, content = Message}),
+    "Content-Type",
+    "application/json"
+)
+end
+-- End Of Discord Sender
 
 
 
@@ -397,7 +429,9 @@ write(50,DisY,round(Consumption))
 write(61,DisY,round(PwrDiff))
 
 
-if RoundDP(PwrDiff) < Contents[1] then
+--######### If Consuption == 0 then displays Power production below usage ########  FIX NEEDED / REWRITE
+
+
 if Production == 0 then
 if Fused == true then 
 gpu:setForeground(1,0,0,1)
@@ -446,8 +480,7 @@ end
     end
 
  end
-end
-
+--######### If Consuption == 0 then displays Power production below usage ########  FIX NEEDED / REWRITE
 end
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
@@ -677,6 +710,7 @@ end
 function Boot()
 if BFlag == 0 then
 clearScreen()
+if EnableDiscord == true then EXT_Discord(SiteName,SYS[5].." : "..ProgName.." Ver : "..Ver) end
 write(0,0,ProgName)
 write(0,1,"Prg Ver : "..Ver)
 write(0,2,"Mod Ver : "..MVer)
