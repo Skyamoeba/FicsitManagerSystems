@@ -1,9 +1,9 @@
 -- Mod Ver Notification
 function MODVerD()
-  return 37
+  return 38
   end
 function MODVerP()
-  return "0.3.7"
+  return "0.3.8"
   end
 
 -- End Mod Ver Notification
