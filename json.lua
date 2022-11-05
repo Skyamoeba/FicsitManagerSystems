@@ -1,6 +1,6 @@
 --
 -- json.lua
-
+-- Original -- https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
 -- Copyright (c) 2020 rxi
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,7 +21,7 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 --
-
+-- 
 
 local json = { _version = "0.1.2" }
 
@@ -386,4 +386,4 @@ function json.decode(str)
 end
 
 
-
+return json
