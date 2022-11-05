@@ -1,10 +1,22 @@
 Build = "1027-0201DEV-0003    "
 -- Program 1 / 6
 
--- Status Light #############################
+-- Status Panel #############################
 PAN = {"StorageManager",0,0,1,0,40,0,1}
-ConPan = 0
+ConPan = 1
 -- ##########################################
+
+-- Light Pole  ######
+Light_Pole = "StorageLight" -- The Light Pole name / network address
+LightPole  = true
+-- ##################
+
+-- Discord Server
+Discord_Server = "https://discord.com/api/webhooks/985457918424006727/YpWWmvp2w3k0PZj4FVp_bqlSl260UNehrgxT4PGeR7fm2PI6aa0nObk0oaLyXTl8qig0"
+EXT_UseDiscord = true
+-- ##################
+
+
 
 
 SiteName = "Store Site 1"
@@ -14,6 +26,7 @@ EnableScreen     = true
 ConPercentages   = false
 ServerConnected  = true
 DirectConnection = true
+Brightness       = 0.01
 
 -- ITEM LIST ############################################################################################
                   ListVer = "4.0.0"
@@ -59,11 +72,11 @@ CoolingSystem = {100 ,"CoolingSystem               ",0,0,0,0,"CoolingSystem"}
 FusedModularFrame = {50  ,"Fused Modular Frame         ",0,0,0,0,"FusedModularFrame"}
 Stator = {100 ,"Stator                      ",0,0,0,0,"Stator"}
 ElectromagneticControlRod = {100 ,"Electromagnetic Control Rod ",0,0,0,0,"ElectromagneticControlRod"}
+Silica = {500 ,"Silica                      ",0,0,0,0,"Silica"}
 VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
 VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
 VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
-VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
-VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
+VAL2 = {100 ,"Default                     ",0,0,0,0,"Concrete2"}
 
 --#######################################################################################################
 
@@ -80,8 +93,6 @@ VAL = {100 ,"Default                     ",0,0,0,0,"Default"}
 
 function ContainerList()
 -- Display
-
-
 
 ConStatus(8,IronPlates,1,1)
 ConStatus(9,IronRods,1,2)
@@ -103,6 +114,7 @@ ConStatus(24,Rotor,1,17)
 ConStatus(25,RadioControlUnit,1,18)
 ConStatus(26,Motor,1,19)
 ConStatus(27,ModularFrame,1,20)
+--ConStatus(28,VAL2,1,21)
 
 --Page 2
 --ConStatus(28,Rubber,1,21)
@@ -122,7 +134,6 @@ ConStatus(27,ModularFrame,1,20)
 --ConStatus(42,ElectromagneticControlRod,1,35)
 
 
-
 end --## ITEM LIST ############################################
 
 
@@ -130,43 +141,6 @@ end --## ITEM LIST ############################################
 --############################################################################
 -- Anything after this point you should not have to change.
 -- The program will let you know if anything will need updating above.
-
-
-
-
---############################################################################
---TEST AREA
---############################################################################
-print("Server-Sender-v0.0.3")
-HubServer = "DC73C2544A7BF761FB9BED8C695A5678"
-Port = 1
---netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
---for n = 1,40 do
---netcard:open(n)
---end
-
-
-function SendToServer(Server, Port, Data)
-netcard = component.proxy("C0DD742E45CDFEE03E5160ADF2378678")
-netcard:open(Port)
-netcard:send(Server, Port, Data)
---print(Server.."|"..Port.."|"..Data)
-end
-
---SendToServer(SwitchServer,Port,"IronPlates")
-
-
-
---############################################################################
---TEST AREA
---############################################################################
-
-
-
-
-
-
-
 
 
 
@@ -209,12 +183,12 @@ end
 dev = 0
 local ProgName = ("Ficsit Storage Manager 3030   ")
 local By = ("Skyamoeba")
-local Ver = ("1.0.0 ")
+local Ver = ("1.0.1")
 local currentver    = 100
-local MVer = ("0.3.7")
-local currentModVer = 37
+local MVer = ("0.3.8")
+local currentModVer = 38
 local BFlag = 0
-Page = 0
+Page = 1
 fCont = {0,0,0,0,0,0,0,0,0,0,0}
 Tick = 0
 Loop = 0
@@ -247,7 +221,6 @@ if Contents[5] == 1 then else
 if pcall (GPwrSwitch) then
 
 GPwrSwitch()
-
 Comp.isSwitchOn = y
 
 else 
@@ -326,14 +299,14 @@ textCol(1,1,1,1)
 write(2,DisY,Contents[2]) -- Container Name
 
 write(36,DisY,conSum) -- Amount in Container
+if conSum == 0 then conSum = conSum + 1 end
 
 write(48,DisY,MaxLvl) -- MaxAmount in Container
 
 write(59,DisY,Cont_Size) -- Slot amount in Container
 
 --if conSum > x then
-if conSum ==  MaxLvl then gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(69,DisY," Full     ") --end
-
+if conSum ==  MaxLvl then gpu:setForeground(0,0,0,1) gpu:setBackground(0,1,0,0.5) write(69,DisY," Full     ")
 if ServerConnected == true then 
 end
 
@@ -346,6 +319,8 @@ end
 else
 
 if conSum < MaxLvl then  gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(69,DisY," FreeSlot ") end
+if conSum == 0 then  gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(69,DisY," FreeSlot ") end
+
 
 if ServerConnected == true then
 end
@@ -354,7 +329,9 @@ if DirectConnection == true then
 gpu:setForeground(0,0,0,1) 
 gpu:setBackground(1,1,0,1) 
 write(82,DisY," Item Requested From Factory ")
+Light_RGB(Light2,true,"Blue",Brightness,true) 
 Connection(Power,true,Contents,DisY)
+
 end
 
 if conSum < 100 then     gpu:setForeground(0,0,0,1) gpu:setBackground(1,0,0,1) write(69,DisY," Low      ") end
@@ -453,15 +430,104 @@ end
 end
 --End Of Updater
 
+-- DISCORD SYSTEM
+
+function EXT_Discord(Name,Message)
+-- get internet card
+local card = computer.getPCIDevices(findClass("FINInternetCard"))[1]
+-- get library from internet
+local req = card:request("https://raw.githubusercontent.com/Skyamoeba/FicsitManagerSystems/main/json.lua", "GET", "")
+local _, libdata = req:await()
+-- save library to filesystem
+filesystem.initFileSystem("/dev")
+filesystem.makeFileSystem("tmpfs", "tmp")
+filesystem.mount("/dev/tmp","/")
+local file = filesystem.open("json.lua", "w")
+file:write(libdata)
+file:close()
+-- load the library from the file system and use it
+local json = filesystem.doFile("json.lua")
+
+local req = card:request(
+    Discord_Server,
+    "POST",
+    json.encode({username = Name, content = Message}),
+    "Content-Type",
+    "application/json"
+)
+end
+-- END OF DISCORD SYSTEM
+
+function SYSGet_LightInfo(LightName)
+if LightName == "" then 
+print("[ System ] : No Light Set") 
+LightPole = false 
+else
+lightPole = component.proxy(component.findComponent(LightName)[1])
+Light1 = lightPole:getModule(0) -- White
+Light2 = lightPole:getModule(1) -- Blue
+Light3 = lightPole:getModule(2) -- Green
+Light4 = lightPole:getModule(3) -- Yellow
+Light5 = lightPole:getModule(4) -- Red
+--print("[ System ] : Get Light Data")
+end
+end -- END SYSGet_LightInfo
+
+
+function Lights_AllOff()
+Light_RGB(Light1,false,"Black",0,false)
+Light_RGB(Light2,false,"Black",0,false)
+Light_RGB(Light3,false,"Black",0,false)
+Light_RGB(Light4,false,"Black",0,false)
+Light_RGB(Light5,false,"Black",0,false)
+--print("[ System ] : All Lights Reset")
+end -- End Of Lights_AllOff
+
+function Light_RGB(Light,State,Colour,I,Blink)
+if LightPole == false then else
+if Colour == "Black" then R = 0   G = 0   B = 0   end
+if Colour == "White" then R = 128 G = 128 B = 128 end
+if Colour == "Blue"  then R = 0   G = 0   B = 128 end
+if Colour == "Green" then R = 0   G = 128 B = 0   end
+if Colour == "Yellow"then R = 128 G = 128 B = 0   end
+if Colour == "Red"   then R = 128 G = 0   B = 0   end
+if Colour == "Purple"then R = 128 G = 0   B = 128 end
+if Colour == "Teal"  then R = 0   G = 128 B = 128 end 
+
+if Blink == true then
+Light:setColor(R,G,B,I) 
+event.pull(0.5)
+Light:setColor(0,0,0,0)
+else
+if State == true then 
+Light:setColor(R,G,B,I) 
+else 
+Light:setColor(0,0,0,0) 
+   end
+  end
+ end 
+end
+
+
+
+
+
+
+
+
+
+
 
 function Blink(r,g,b)
 if IND == 1 then 
   ProgramStat:setcolor(1,0,0,5)
+  Light_RGB(Light5,true,"Red",Brightness,false)
   if CBeep == true then computer.beep() end
   IND = 0
   computer.millis(1000)
 else
   ProgramStat:setcolor(1,1,1,0)
+  Light_RGB(Light5,false,"Red",Brightness,false)
   IND = 1
   computer.millis(1000)
 end
@@ -471,14 +537,14 @@ end
 function UpdateBlink()
 if UIND == 1 then 
   UpdateStat:setcolor(1,1,0,10.0)
-  text.text = VerPrint.." Update"
+    text.text = VerPrint.." Update"
   if CBeep == true then computer.beep() end
   UIND = 0
   computer.millis(1000)
 else
   text.text = "Storage Manager"
   UpdateStat:setcolor(1,1,1,0)
-  UIND = 1
+    UIND = 1
   computer.millis(1000)
 end
 --event.pull(1)
@@ -492,6 +558,7 @@ gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,1,0,1)
 write(57,2,""..VerPrint.." Update Aviliable")
 UpdateBlink()
+Light_RGB(Light1,true,"White",Brightness,true)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 else
@@ -499,6 +566,7 @@ gpu:setForeground(0,0,0,1)
 gpu:setBackground(0,1,0,1)
 write(57,2,"Program Up-To-Date")
 UpdateStat:setcolor(1,1,1,0)
+Light_RGB(Light1,false,"Black",Brightness,false)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
@@ -508,13 +576,15 @@ if currentModVer < ModVersion then
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,1,0,1)
 write(57,3,""..ModVerPrint.." Update Aviliable")
---UpdateBlink()
+
+Light_RGB(Light1,true,"White",Brightness,true)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 else
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(0,1,0,1)
 write(57,3,"MOD Up-To-Date")
+Light_RGB(Light1,true,"Black",Brightness,false)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
@@ -694,7 +764,8 @@ end
 
 -- Boot Loop -- Add anything thats needs to be loaded before the main loop here
 function Boot()
-
+SYSGet_LightInfo(Light_Pole)
+Lights_AllOff()
 
 if BFlag == 0 then
 clearScreen()
@@ -717,9 +788,11 @@ if EnableScreen == false then print(SYS[4]) else print(SystemScreenSys[1]..Syste
 end
 BFlag = 1
 if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 10.0,5.0) end
+Light_RGB(Light5,true,"Purple",Brightness,false)
 print("[System] : Checking For Errors / Updates")
 UpdateChecker()
 sleep(5)
+Light_RGB(Light5,false,"Purple",Brightness,false)
 if STA == "" then print("[System] : Program needs setting up") else print("[System] : Boot Ok!") end
  end
 end
@@ -788,30 +861,35 @@ end
 --##########################################################################################################
 
 function selfTest()
-  if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 0.0,10.0) end
-  print(ERR[2])
+  if EnableStausLight == true then 
+  ProgramStat:setColor(10.0, 0.0, 0.0,10.0)
+  Light_RGB(Light3,false,"Green",Brightness,false)
+  Light_RGB(Light4,true,"Yellow",Brightness,true)
+end
+  
+   print(ERR[2])
   FLAG = 0
-  TEST = 1
+ TEST = 1
 end
 
-
+Boot()
 while true do
 write(0,0,"Booting System Up")
-Boot()
+
+
 --print(FLAG)
 MainLoop()
 
 --ErrorBoxDis(0,50)
   if EnableStausLight == true then
-   if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,1) end
-    if FLAG == 1 then Blink() end
+   if FLAG == 0 then 
+ProgramStat:setColor(0.0, 10.0, 0.0,1) 
+Light_RGB(Light3,true,"Green",Brightness,false) 
+Light_RGB(Light4,false,"Black",Brightness,false) 
+end
+    if FLAG == 1 then Light_RGB(Light3,false,"Black",1,false) Blink() end
   end
 
-if FLAG == 1 then 
-if Sec == 30 then SendToServer(HubServer, 1, "Error") end 
-else 
-if Sec == 30 then SendToServer(HubServer, 1, "Error Fixed") end 
-end
    
 if FLAG == 1 then if Sec == 30 then selfTest() end else TEST = 0 end
 

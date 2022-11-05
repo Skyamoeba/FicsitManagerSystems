@@ -7,6 +7,12 @@ PAN = {"BatteryManager",0,0,1,0,40,0,1}
 ConPan = 0
 -- ##########################################
 
+-- Battery Level Light
+Light_Pole = "BatteryLight" -- The Light Pole name / network address
+LightPole  = true
+Brightness       = 0.009
+
+
 
 SiteName = "Battery Storage 1"
 Refresh_Rate = 1
@@ -75,10 +81,10 @@ dev = 0
 local ProgName = ("Ficsit Battery Manager 3030   ")
 local By = ("Skyamoeba")
 
-local Ver = ("1.0.0")
-local currentver    = 100
-local MVer = ("0.3.7")
-local currentModVer = 37
+local Ver = ("1.0.1")
+local currentver    = 101
+local MVer = ("0.3.8")
+local currentModVer = 38
 local BFlag = 0
 Page = 0
 fCont = {0,0,0,0,0,0,0,0,0,0,0}
@@ -212,59 +218,50 @@ end
 
 
 
---- LightStatus Pole V2 ---
-LightSys = {"Light System Ver : ","2.0.1"}
-function LightSPL(LightNumber,RED,GREEN,BLUE,INTENSITY,Contents)
+function Light_PoleSys(LigName,prefix,LightNum,State,Colour,I,Blink)
+if LightPole == true then
+local function LightPoleDat()
+local SetupLight1 = {prefixLig1= prefix, ligdata=LigName}
+LightName = string.gsub("$prefixLig1 $ligdata", "%$(%w+)", SetupLight1)
+lightPole = component.proxy(component.findComponent(LightName)[1])
+Light1 = lightPole:getModule(LightNum) -- White
+end -- End LightPoleDat
 
-if FLAG == 0 then
- if TEST == 1 then
-  Contents[4] = 0
- end
-end
+if pcall (LightPoleDat) then
 
-function LigData() 
-ContLight = component.proxy(component.findComponent(LightNumber)[1])
-end
+LightPoleDat()
 
-if Contents[4] == 1 then else
-  if pcall (LigData) then
-   LigData()
-   ContLight:setColor(RED,GREEN,BLUE,INTENSITY)
-  else 
-   FLAG = 1 print(ERR[4]..Contents[7]) Contents[4] = 1 end
-  end
-end
-
-function Blink(r,g,b)
-if IND == 1 then 
-  ProgramStat:setcolor(1,0,0,10.0)
-  if CBeep == true then computer.beep() end
-  IND = 0
-  computer.millis(1000)
+if LightPole == false then else
+if Colour == "Black" then R = 0   G = 0   B = 0   end
+if Colour == "White" then R = 128 G = 128 B = 128 end
+if Colour == "Blue"  then R = 0   G = 0   B = 128 end
+if Colour == "Green" then R = 0   G = 128 B = 0   end
+if Colour == "Yellow"then R = 128 G = 128 B = 0   end
+if Colour == "Red"   then R = 128 G = 0   B = 0   end
+if Colour == "Purple"then R = 128 G = 0   B = 128 end
+if Colour == "Teal"  then R = 0   G = 128 B = 128 end 
+if Blink == true then
+Light1:setColor(R,G,B,I) 
+event.pull(0.5)
+Light1:setColor(0,0,0,0)
 else
-  ProgramStat:setcolor(1,1,1,0)
-  IND = 1
-  computer.millis(1000)
-end
---event.pull(1)
-end
+if State == true then 
+Light1:setColor(R,G,B,I) 
+else 
+Light1:setColor(0,0,0,0) 
+    end -- End State
+   end -- End Blink
+  end -- LightPole
 
-function UpdateBlink()
-if IND == 1 then 
-  UpdateStat:setcolor(1,1,0,10)
-  text.text = VerPrint.." Update"
-  if CBeep == true then computer.beep() end
-  IND = 0
-  computer.millis(1000)
-else
-  text.text = "Battery Manager"
-  UpdateStat:setcolor(1,1,1,0)
-  IND = 1
-  computer.millis(1000)
-end
---event.pull(1)
-end
+else -- pcall else
+-- Error System Protocols Go Here
+print("[ System ] - Light Error for : "..LigName) 
 
+ end -- End pcall
+else -- Else LightPole == true
+print("Light Pole Switched Off")
+end -- End LightPole == true
+end -- End Light_PoleSys
 
 
 --- Power Conections / Monitoring ---
@@ -352,6 +349,16 @@ if pcall (PWRData) then
 
 PWRData()
 
+Light_PoleSys(Light_Pole,"B1",7,false,"Green",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",6,false,"Green",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",5,false,"Green",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",4,false,"Yellow",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",3,false,"Yellow",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",2,false,"Yellow",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",1,false,"Red",Brightness,false)
+Light_PoleSys(Light_Pole,"B1",0,false,"Red",Brightness,false)
+
+
 write(37,1,"Battery Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
 if currentver < VersionBatt then 
@@ -392,18 +399,18 @@ write(37,5,"Consumption  : "..round(Consumption))
 write(87,1,"Total Stored : [        ]")
 
 
-if RoundDP(TotalPwr,0) == 0         then write(103,1,"        ") end
-if RoundDP(TotalPwr,0) == 100.0 then gpu:setForeground(0,1,0,1) write(110,1,"=")end
-if RoundDP(TotalPwr,0) > 87.5  then gpu:setForeground(0,1,0,1) write(109,1,"=")end
-if RoundDP(TotalPwr,0) > 75.0  then gpu:setForeground(0,1,0,1) write(108,1,"=")end
-if RoundDP(TotalPwr,0) > 62.5  then gpu:setForeground(1,1,0,1) write(107,1,"=")end
-if RoundDP(TotalPwr,0) > 50.0  then gpu:setForeground(1,1,0,1) write(106,1,"=")end
-if RoundDP(TotalPwr,0) > 37.5  then gpu:setForeground(1,1,0,1) write(105,1,"=")end
-if RoundDP(TotalPwr,0) > 25.0  then gpu:setForeground(1,0,0,1) write(104,1,"=")end
-if RoundDP(TotalPwr,0) > 12.5  then gpu:setForeground(1,0,0,1) write(103,1,"=") end
+if RoundDP(TotalPwr,0) == 0         then write(103,1,"        ") Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,true) end
+if RoundDP(TotalPwr,0) == 100.0 then gpu:setForeground(0,1,0,1) write(110,1,"=")Light_PoleSys(Light_Pole,"B1",7,true,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 87.5  then gpu:setForeground(0,1,0,1) write(109,1,"=")Light_PoleSys(Light_Pole,"B1",6,true,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 75.0  then gpu:setForeground(0,1,0,1) write(108,1,"=")Light_PoleSys(Light_Pole,"B1",5,true,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 62.5  then gpu:setForeground(1,1,0,1) write(107,1,"=") Light_PoleSys(Light_Pole,"B1",4,true,"Yellow",Brightness,false)end
+if RoundDP(TotalPwr,0) > 50.0  then gpu:setForeground(1,1,0,1) write(106,1,"=") Light_PoleSys(Light_Pole,"B1",3,true,"Yellow",Brightness,false)end
+if RoundDP(TotalPwr,0) > 37.5  then gpu:setForeground(1,1,0,1) write(105,1,"=") Light_PoleSys(Light_Pole,"B1",2,true,"Yellow",Brightness,false)end
+if RoundDP(TotalPwr,0) > 25.0  then gpu:setForeground(1,0,0,1) write(104,1,"=") Light_PoleSys(Light_Pole,"B1",1,true,"Red",Brightness,false) end
+if RoundDP(TotalPwr,0) > 12.5  then gpu:setForeground(1,0,0,1) write(103,1,"=") Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,false) end
+if RoundDP(TotalPwr,0) < 12.5  then Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,true) end
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
-
 
 write(87,2,"% Stored     : "..RoundDP(TotalPwr,0).."%")
 write(87,3,"Battery In   : "..round(BatInput))
@@ -611,7 +618,7 @@ textCol(1,1,1,1)
 x = DisX
 y = DisY
 
-write(DisX,y,"O================================#")
+write(DisX,y,"O================================O")
 y = y +1
 write(DisX,y,"| "..ProgName)
 y = y +1
@@ -736,6 +743,10 @@ write(0,0,"Ficsit Battery Manager 3030   ")
 write(0,1,"Prg Ver : "..Ver)
 write(0,2,"Mod Ver : "..MVer)
 write(0,3,"Build   : "..Build)
+write(0,5,"[System] : Checking For Errors / Updates")
+
+
+
 gpu:flush()
 print("O--------------------------------O")
 print("|",ProgName,"|")
@@ -754,7 +765,7 @@ if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 10.0,5.0) end
 print("[System] : Checking For Errors / Updates")
 UpdateChecker()
 sleep(5)
-if STA == "" then print("[System] : Program needs setting up") else print("[System] : Boot Ok!") end
+if STA == "" then print("[System] : Program needs setting up") else write(0,4,"[System] : Boot Ok!") print("[System] : Boot Ok!") end
  end
 end
 -- End of Boot Loop --################################################################################

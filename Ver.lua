@@ -1,9 +1,12 @@
+-- Mod Ver Notification
 function MODVerD()
-  return 37
+  return 38
   end
 function MODVerP()
-  return "0.3.7"
+  return "0.3.8"
   end
+
+-- End Mod Ver Notification
 
 -- Test Area Version Checker
 function VersionCheckBatt()
@@ -57,9 +60,18 @@ function VerCheckGasP()
 
 -- Store Manager Version Checker
 function VerCheckStoreD()
-  return 100
+  return 101
   end
 function VerCheckStoreP()
-  return "1.0.0"
+  return "1.0.1"
   end
 -- End Store Manager Version Checker
+
+-- Power Manager Version Checker
+function VerCheckPowerD()
+  return 100
+  end
+function VerCheckPowerP()
+  return "1.0.0"
+  end
+-- End Power Manager Version Checker

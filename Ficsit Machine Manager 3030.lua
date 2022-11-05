@@ -35,6 +35,8 @@ ParticleAcc  = {100 ,"Particle Acc" ,0,0,0,0,"ParticleAcc"}
 OilExtractor = {100 ,"OilExtractor" ,0,0,0,0,"OilExtractor"}
 ResourceWell = {100 ,"Resource Well" ,0,0,0,0,"ResourceWell"}
 
+Concrete = {100 ,"Refinery 2" ,0,0,0,0,"Concrete2"}
+
 
 function MachineList()
 --MachineStatus(0,8,Miner,false,false,true)
@@ -44,7 +46,7 @@ function MachineList()
 --MachineStatus(0,12,Assembler,false,false)
 --MachineStatus(0,13,Manufacture,false,false)
 --MachineStatus(0,14,Packager,false,false)
-MachineStatus(0,15,Refinery,false,false)
+MachineStatus(0,15,Concrete,true,false)
 --MachineStatus(0,16,Blender,false,false)
 --MachineStatus(0,17,ParticleAcc,false,false)
 --MachineStatus(0,18,OilExtractor,false,false,true)
@@ -106,8 +108,8 @@ local ProgName = ("Ficsit Machine Manager 3030 ")
 local By = ("Skyamoeba")
 local Ver = ("1.0.0")
 local currentver    = 100
-local MVer = ("0.3.7")
-local currentModVer = 37
+local MVer = ("0.3.8")
+local currentModVer = 38
 local BFlag = 0
 Page = 0
 fCont = {0,0,0,0,0,0,0,0,0,0,0}
@@ -195,13 +197,6 @@ end
 if ModVersion < currentModVer then
 print("[FINSYS] : Program has not been tested on this FIN Version : "..MVer)
 end
-
---if VersionBatt > currentver then
--- print("[System] - Update Avliable")
---else
--- print("[System] - Latest Version Installed")
---end
-
 end
 --End Of Updater
 
@@ -278,7 +273,7 @@ end
 
 function MACData()
 
-prefix = {"MAC","LIG","SWT"}
+prefix = {"MAC","LIG","PWR"}
 local setupmac = {prefixcon= prefix[1], macdata=Contents[7]}
 local setuppwr = {prefixpwr= prefix[3], pwrdata=Contents[7]}
 local setuplig = {prefixlig= prefix[2], ligdata=Contents[7]}
@@ -408,7 +403,7 @@ x = x + 10
 gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) 
 write(x,y," [ INFO ] ") 
 gpu:setForeground(1,1,1,1) gpu:setBackground(0,0,0,0)
-write(80,y,"Power Switch is Off ")
+   write(80,y,"Assigned External Switch is Off  ")
   elseif 
    Standby == true then gpu:setForeground(0,0,0,1) gpu:setBackground(1,1,0,1) write(x,y," [ INFO ] ")
    gpu:setForeground(1,1,1,1) gpu:setBackground(0,0,0,0)
