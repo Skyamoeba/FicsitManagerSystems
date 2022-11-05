@@ -13,11 +13,12 @@ LightPole  = true
 
 -- Discord Server
 Discord_Server = "https://discord.com/api/webhooks/985457918424006727/YpWWmvp2w3k0PZj4FVp_bqlSl260UNehrgxT4PGeR7fm2PI6aa0nObk0oaLyXTl8qig0"
-EXT_UseDiscord = true
+EXT_UseDiscord = false
 -- ##################
 
-
-
+-- GitHub Checker / Checks for update to the program
+UpdateCheck = false
+-- ##################
 
 SiteName = "Store Site 1"
 CBeep            = false
@@ -184,7 +185,7 @@ dev = 0
 local ProgName = ("Ficsit Storage Manager 3030   ")
 local By = ("Skyamoeba")
 local Ver = ("1.0.1")
-local currentver    = 100
+local currentver    = 101
 local MVer = ("0.3.8")
 local currentModVer = 38
 local BFlag = 0
@@ -394,6 +395,8 @@ end
 
 -- Update Checker (part of boot up)
 function UpdateChecker()
+print("[System] : Update Checker Running....")
+if UpdateCheck == true then
 if Debug == true then print("System - Checking For Internet Card") end
 local card = computer.getPCIDevices(findClass("FINInternetCard"))[1]
 if not card then
@@ -425,6 +428,10 @@ end
 
 if ModVersion < currentModVer then
 print("[FINSYS] : Program has not been tested on this FIN Version : "..MVer)
+end
+
+else
+print("[System] : Update Checker Disabled By Dev Due To Error")
 end
 
 end
@@ -553,6 +560,9 @@ end
 function UpdateDisplay()
 write(37,1,"Storage Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
+write(37,3,"Mod Update Check  : ")
+
+if UpdateCheck == true then 
 if currentver < VersionStorage then 
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,1,0,1)
@@ -570,13 +580,10 @@ Light_RGB(Light1,false,"Black",Brightness,false)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
 end
-
-write(37,3,"Mod Update Check  : ")
 if currentModVer < ModVersion then 
 gpu:setForeground(0,0,0,1)
 gpu:setBackground(1,1,0,1)
 write(57,3,""..ModVerPrint.." Update Aviliable")
-
 Light_RGB(Light1,true,"White",Brightness,true)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
@@ -587,6 +594,10 @@ write(57,3,"MOD Up-To-Date")
 Light_RGB(Light1,true,"Black",Brightness,false)
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
+end
+else
+write(57,2,"Disabled")
+write(57,3,"Disabled")
 end
 end
 

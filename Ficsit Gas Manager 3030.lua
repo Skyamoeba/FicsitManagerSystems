@@ -328,7 +328,8 @@ end
 end
 
 
-
+VersionFluid = 100 -- Temp
+ModVersion = 38 -- Temp
 
 function UpdateDisplay()
 write(37,1,"Tank Site Name    : "..SiteName)
@@ -518,7 +519,7 @@ BFlag = 1
 if EnableStausLight == true then
 ProgramStat:setColor(10.0, 0.0, 10.0,5.0) end
 print("[System] : Checking For Errors / Updates")
-UpdateChecker()
+--UpdateChecker() --#Disabled
 sleep(5)
 if STA == "" then print("[System] : Program needs setting up") else print("[System] : Boot Ok!") end
  end
@@ -552,7 +553,7 @@ Sys_OverView(34,0)
 Sys_GridOverview(0,30)
 Sys_BatDis(0,7)
 
-UpdateDisplay()
+--UpdateDisplay() --#Disabled
 
 ITEMLIST()
 

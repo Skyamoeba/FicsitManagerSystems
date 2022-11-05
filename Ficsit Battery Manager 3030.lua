@@ -13,7 +13,7 @@ LightPole  = true
 Brightness       = 0.009
 
 
-
+DisplayName = "Program Test Area"
 SiteName = "Battery Storage 1"
 Refresh_Rate = 1
 --FicsItNetworksVer= "0.2.1"
@@ -21,6 +21,7 @@ CBeep            = false
 EnableStausLight = true
 AlertForAnyPWR   = true -- if this is true then any pwr issues will need change the status light, false it will not trigger onlyin the display you will see issues
 EnableScreen     = true
+DiscordNotifications = true
 
 -- Local Network Settings
 ServerLogger     = false
@@ -95,6 +96,7 @@ Hrs = 0
 Mins = 0
 Sec = 0
 Cat = 0
+DISCORD = 0
 
 --Error Handler for the batterys
 Battery1  = {1 ,Batterys_Bank[1] ,0,0,0,0,Batterys_Bank[1] }
@@ -210,7 +212,30 @@ end
 end
 --End Of Updater
 
+function EXT_Discord(Name,Message) --Discord Notifications
+-- get internet card
+local card = computer.getPCIDevices(findClass("FINInternetCard"))[1]
+-- get library from internet
+local req = card:request("https://raw.githubusercontent.com/Skyamoeba/FicsitManagerSystems/main/json.lua", "GET", "")
+local _, libdata = req:await()
+-- save library to filesystem
+filesystem.initFileSystem("/dev")
+filesystem.makeFileSystem("tmpfs", "tmp")
+filesystem.mount("/dev/tmp","/")
+local file = filesystem.open("json.lua", "w")
+file:write(libdata)
+file:close()
+-- load the library from the file system and use it
+local json = filesystem.doFile("json.lua")
 
+local req = card:request(
+    "https://discord.com/api/webhooks/985457918424006727/YpWWmvp2w3k0PZj4FVp_bqlSl260UNehrgxT4PGeR7fm2PI6aa0nObk0oaLyXTl8qig0",
+    "POST",
+    json.encode({username = Name, content = Message}),
+    "Content-Type",
+    "application/json"
+)
+end
 
 
 
@@ -349,16 +374,16 @@ if pcall (PWRData) then
 
 PWRData()
 
-Light_PoleSys(Light_Pole,"B1",7,false,"Green",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",6,false,"Green",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",5,false,"Green",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",4,false,"Yellow",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",3,false,"Yellow",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",2,false,"Yellow",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",1,false,"Red",Brightness,false)
-Light_PoleSys(Light_Pole,"B1",0,false,"Red",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",7,false,"Green",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",6,false,"Green",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",5,false,"Green",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",4,false,"Yellow",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",3,false,"Yellow",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",2,false,"Yellow",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",1,false,"Red",Brightness,false)
+--Light_PoleSys(Light_Pole,"B1",0,false,"Red",Brightness,false)
 
-
+--[[
 write(37,1,"Battery Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
 if currentver < VersionBatt then 
@@ -391,7 +416,7 @@ gpu:setBackground(0,1,0,1)
 write(57,3,"MOD Up-To-Date")
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
-end
+end]]--
 
 write(37,4,"Production   : "..round(Production))
 write(37,5,"Consumption  : "..round(Consumption))
@@ -400,13 +425,29 @@ write(87,1,"Total Stored : [        ]")
 
 
 if RoundDP(TotalPwr,0) == 0         then write(103,1,"        ") Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,true) end
-if RoundDP(TotalPwr,0) == 100.0 then gpu:setForeground(0,1,0,1) write(110,1,"=")Light_PoleSys(Light_Pole,"B1",7,true,"Green",Brightness,false)end
-if RoundDP(TotalPwr,0) > 87.5  then gpu:setForeground(0,1,0,1) write(109,1,"=")Light_PoleSys(Light_Pole,"B1",6,true,"Green",Brightness,false)end
-if RoundDP(TotalPwr,0) > 75.0  then gpu:setForeground(0,1,0,1) write(108,1,"=")Light_PoleSys(Light_Pole,"B1",5,true,"Green",Brightness,false)end
-if RoundDP(TotalPwr,0) > 62.5  then gpu:setForeground(1,1,0,1) write(107,1,"=") Light_PoleSys(Light_Pole,"B1",4,true,"Yellow",Brightness,false)end
-if RoundDP(TotalPwr,0) > 50.0  then gpu:setForeground(1,1,0,1) write(106,1,"=") Light_PoleSys(Light_Pole,"B1",3,true,"Yellow",Brightness,false)end
-if RoundDP(TotalPwr,0) > 37.5  then gpu:setForeground(1,1,0,1) write(105,1,"=") Light_PoleSys(Light_Pole,"B1",2,true,"Yellow",Brightness,false)end
-if RoundDP(TotalPwr,0) > 25.0  then gpu:setForeground(1,0,0,1) write(104,1,"=") Light_PoleSys(Light_Pole,"B1",1,true,"Red",Brightness,false) end
+if RoundDP(TotalPwr,0) == 100.0 then gpu:setForeground(0,1,0,1) write(110,1,"=")
+Light_PoleSys(Light_Pole,"B1",7,true,"Green",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",7,false,"Green",Brightness,false)
+end
+if RoundDP(TotalPwr,0) > 87.5  then gpu:setForeground(0,1,0,1) write(109,1,"=")Light_PoleSys(Light_Pole,"B1",6,true,"Green",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",6,false,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 75.0  then gpu:setForeground(0,1,0,1) write(108,1,"=")Light_PoleSys(Light_Pole,"B1",5,true,"Green",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",5,false,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 62.5  then gpu:setForeground(1,1,0,1) write(107,1,"=") Light_PoleSys(Light_Pole,"B1",4,true,"Yellow",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",4,false,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 50.0  then gpu:setForeground(1,1,0,1) write(106,1,"=") Light_PoleSys(Light_Pole,"B1",3,true,"Yellow",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",3,false,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 37.5  then gpu:setForeground(1,1,0,1) write(105,1,"=") Light_PoleSys(Light_Pole,"B1",2,true,"Yellow",Brightness,false)
+else
+Light_PoleSys(Light_Pole,"B1",2,false,"Green",Brightness,false)end
+if RoundDP(TotalPwr,0) > 25.0  then gpu:setForeground(1,0,0,1) write(104,1,"=") Light_PoleSys(Light_Pole,"B1",1,true,"Red",Brightness,false) 
+else
+Light_PoleSys(Light_Pole,"B1",1,false,"Green",Brightness,false)end
 if RoundDP(TotalPwr,0) > 12.5  then gpu:setForeground(1,0,0,1) write(103,1,"=") Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,false) end
 if RoundDP(TotalPwr,0) < 12.5  then Light_PoleSys(Light_Pole,"B1",0,true,"Red",Brightness,true) end
 gpu:setForeground(1,1,1,1)
@@ -418,6 +459,13 @@ write(87,4,"Battery Out  : "..round(BatOutput))
 write(87,5,"Fuse Status  : [        ]")
 
 if Fused == true then 
+if DISCORD == 0 then
+if DiscordNotifications == true 
+then 
+DISCORD = 1 
+EXT_Discord(DisplayName,SiteName.." : [ Attention ] - Fuse has tripped, Please Remember to reset computer once maintenance has been completed") 
+end
+end
 gpu:setForeground(1,0,0,1)
 write(103,5,"===//===")
 FLAG = 1
@@ -763,7 +811,7 @@ end
 BFlag = 1
 if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 10.0,5.0) end
 print("[System] : Checking For Errors / Updates")
-UpdateChecker()
+--UpdateChecker() #Disabled
 sleep(5)
 if STA == "" then print("[System] : Program needs setting up") else write(0,4,"[System] : Boot Ok!") print("[System] : Boot Ok!") end
  end
@@ -880,7 +928,7 @@ MainLoop()
 --ErrorBoxDis(0,50)
   if EnableStausLight == true then
    if FLAG == 0 then ProgramStat:setColor(0.0, 10.0, 0.0,1) end
-    if FLAG == 1 then Blink() end
+    if FLAG == 1 then end --Blink() end
   end
     
 if FLAG == 1 then if Sec == 30 then selfTest() end else TEST = 0 end

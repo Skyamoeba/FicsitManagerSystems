@@ -305,7 +305,7 @@ if Contents[3] == 1 then else
 if pcall (MACData) then
 
 MACData()
-
+--[[
 write(37,1,"Machine Site Name : "..SiteName)
 write(37,2,"Update Check      : ")
 if currentver < VersionMachine then 
@@ -338,7 +338,7 @@ gpu:setBackground(0,1,0,1)
 write(57,3,"MOD Up-To-Date")
 gpu:setForeground(1,1,1,1)
 gpu:setBackground(0,0,0,0)
-end
+end]]--
 
 
 
@@ -604,7 +604,7 @@ end
 BFlag = 1
 if EnableStausLight == true then ProgramStat:setColor(10.0, 0.0, 10.0,5.0) end
 print("[System] : Checking For Errors / Updates")
-UpdateChecker()
+--UpdateChecker() #Disabled
 sleep(5)
 if STA == "" then print("[System] : Program needs setting up") else print("[System] : Boot Ok!") end
  end
