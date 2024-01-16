@@ -1,9 +1,9 @@
 -- Mod Ver Notification
 function MODVerD()
-  return 38
+  return 319
   end
 function MODVerP()
-  return "0.3.8"
+  return "0.3.19"
   end
 
 -- End Mod Ver Notification
@@ -60,10 +60,10 @@ function VerCheckGasP()
 
 -- Store Manager Version Checker
 function VerCheckStoreD()
-  return 101
+  return 102
   end
 function VerCheckStoreP()
-  return "1.0.1"
+  return "1.0.2"
   end
 -- End Store Manager Version Checker
 
