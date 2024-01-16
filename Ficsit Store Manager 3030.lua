@@ -1,4 +1,4 @@
-Build = "1027-0201DEV-0003    "
+Build = "1027-0201DEV-2401    "
 -- Program 1 / 6
 
 -- Status Panel #############################
@@ -17,7 +17,7 @@ EXT_UseDiscord = false
 -- ##################
 
 -- GitHub Checker / Checks for update to the program
-UpdateCheck = false
+UpdateCheck = true
 -- ##################
 
 SiteName = "Store Site 1"
@@ -27,7 +27,7 @@ EnableScreen     = true
 ConPercentages   = false
 ServerConnected  = true
 DirectConnection = true
-Brightness       = 0.01
+Brightness       = 0.001
 
 -- ITEM LIST ############################################################################################
                   ListVer = "4.0.0"
@@ -149,9 +149,9 @@ end --## ITEM LIST ############################################
 if EnableScreen == true then 
 SystemScreenSys = {"System Screen Sys Ver: ","1.0.1"}
 --gpu = computer.getGPUs()[1]
-gpu = computer.getPCIDevices(findClass("GPU_T1_C"))[1]
+gpu = computer.getPCIDevices(classes["GPU_T1_C"])[1]
 --local screen = computer.proxy(component.findComponent("Monitor"))[1]
-screen = computer.getPCIDevices(findClass("FINComputerScreen"))[1]
+screen = computer.getPCIDevices(classes["FINComputerScreen"])[1]
 gpu:bindScreen(screen)
 w,h = gpu:setSize(115,40) --200 , 55
 end
@@ -184,10 +184,10 @@ end
 dev = 0
 local ProgName = ("Ficsit Storage Manager 3030   ")
 local By = ("Skyamoeba")
-local Ver = ("1.0.1")
-local currentver    = 101
-local MVer = ("0.3.8")
-local currentModVer = 38
+local Ver = ("1.0.2")
+local currentver    = 102
+local MVer = ("0.3.19")
+local currentModVer = 319
 local BFlag = 0
 Page = 1
 fCont = {0,0,0,0,0,0,0,0,0,0,0}
@@ -222,7 +222,7 @@ if Contents[5] == 1 then else
 if pcall (GPwrSwitch) then
 
 GPwrSwitch()
-Comp.isSwitchOn = y
+Comp:setIsSwitchOn(y)
 
 else 
  FLAG = 1 print(ERR[5]..Contents[7])
@@ -398,7 +398,7 @@ function UpdateChecker()
 print("[System] : Update Checker Running....")
 if UpdateCheck == true then
 if Debug == true then print("System - Checking For Internet Card") end
-local card = computer.getPCIDevices(findClass("FINInternetCard"))[1]
+local card = computer.getPCIDevices(classes["FINInternetCard"])[1]
 if not card then
   print("[ERROR] - No internet-card found! Please install a internet card!")
   computer.beep(0.2)
